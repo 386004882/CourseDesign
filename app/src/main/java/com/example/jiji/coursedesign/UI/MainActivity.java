@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                                 , Snackbar.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_photo:
-                        replaceFragment(new PhotoFragment());
+                        replaceFragment(new ChooseAreaFragment());
                         break;
                     case R.id.nav_paint:
 

@@ -2,6 +2,8 @@ package com.example.jiji.coursedesign.UI;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,7 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
     private Province selectedProvince;//选中的省份s
     private City selectedCity;//选中的城市
     private int currentLevel;//当前选中的级别
+    private DrawerLayout drawerLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -76,6 +80,8 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
+
+        //后退键逻辑
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +89,12 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     queryProvinces();
+                } else if (currentLevel == LEVEL_PROVINCE) {
+                    backButton.setBackgroundResource(R.mipmap.ic_launcher);
+                    MainActivity main = (MainActivity) getActivity();
+                    drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
+                    drawerLayout.openDrawer(GravityCompat.START);
+
                 }
             }
         });
@@ -91,7 +103,7 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
 
     private void queryProvinces() {
         titleText.setText("中国");
-        backButton.setVisibility(View.GONE);
+        backButton.setVisibility(View.VISIBLE);
         provinceList = DataSupport.findAll(Province.class);
         if (provinceList.size() > 0) {
             dataList.clear();

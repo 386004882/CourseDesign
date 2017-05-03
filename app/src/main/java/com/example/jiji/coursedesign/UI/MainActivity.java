@@ -53,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
                                 , Snackbar.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_photo:
-                        replaceFragment(new ChooseAreaFragment());
+
                         break;
                     case R.id.nav_paint:
 
                         break;
                     case R.id.nav_weather:
-
+                        replaceFragment(new ChooseAreaFragment());
                         break;
                     case R.id.nav_cal:
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case android.R.id.home://打开侧滑菜单
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.item_backup://上传备份

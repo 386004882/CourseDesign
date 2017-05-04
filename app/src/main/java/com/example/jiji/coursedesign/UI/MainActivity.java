@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //默认加载文字备忘碎片
+        replaceFragment(new TextFragment());
+
 
         //侧滑菜单
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //更换碎片
     private void replaceFragment(android.support.v4.app.Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

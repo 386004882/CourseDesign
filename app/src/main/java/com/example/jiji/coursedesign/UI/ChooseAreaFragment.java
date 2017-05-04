@@ -73,6 +73,7 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        titleText.setVisibility(View.VISIBLE);
         Utility.hiddneMenu(menu);
         super.onCreateOptionsMenu(menu, inflater);
     }

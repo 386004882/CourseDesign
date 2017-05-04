@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.jiji.coursedesign.R;
 import com.example.jiji.coursedesign.Utils.Utility;
@@ -24,6 +25,7 @@ public class TextFragment extends Fragment {
     private FloatingActionButton fab;
     private MainActivity main;
     private DrawerLayout drawerLayout;
+    private TextView title;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class TextFragment extends Fragment {
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         main = (MainActivity) getActivity();
         drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
+        title = (TextView) main.findViewById(R.id.title_text);
         setHasOptionsMenu(true);
         return view;
     }
@@ -44,6 +47,7 @@ public class TextFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Utility.showMenu(menu);
+        title.setVisibility(View.INVISIBLE);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

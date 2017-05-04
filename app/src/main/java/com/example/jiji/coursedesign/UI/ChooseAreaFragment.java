@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +43,7 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
     public static final int LEVEL_COUNTY = 2;
     protected ProgressDialog progressDialog;
     private TextView titleText;
-    private Button backButton;
+    //  private Button backButton;
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private List<String> dataList = new ArrayList<>();
@@ -52,16 +54,43 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
     private City selectedCity;//选中的城市
     private int currentLevel;//当前选中的级别
     private DrawerLayout drawerLayout;
+    private MainActivity main;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        main = (MainActivity) getActivity();
         View view = inflater.inflate(R.layout.choose_area, container, false);
-        titleText = (TextView) view.findViewById(R.id.title_text);
-        backButton = (Button) view.findViewById(R.id.back_button);
+        titleText = (TextView) main.findViewById(R.id.title_text);
+        //backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
+        setHasOptionsMenu(true);
         return view;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Utility.hiddneMenu(menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (currentLevel == LEVEL_COUNTY) {
+                    queryCities();
+                } else if (currentLevel == LEVEL_CITY) {
+                    queryProvinces();
+                } else if (currentLevel == LEVEL_PROVINCE) {
+                    drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -81,29 +110,29 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        //后退键逻辑
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentLevel == LEVEL_COUNTY) {
-                    queryCities();
-                } else if (currentLevel == LEVEL_CITY) {
-                    queryProvinces();
-                } else if (currentLevel == LEVEL_PROVINCE) {
-                    backButton.setBackgroundResource(R.mipmap.ic_launcher);
-                    MainActivity main = (MainActivity) getActivity();
-                    drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
-                    drawerLayout.openDrawer(GravityCompat.START);
 
-                }
-            }
-        });
+//        //后退键逻辑
+//        backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (currentLevel == LEVEL_COUNTY) {
+//                    queryCities();
+//                } else if (currentLevel == LEVEL_CITY) {
+//                    queryProvinces();
+//                } else if (currentLevel == LEVEL_PROVINCE) {
+//                    backButton.setBackgroundResource(R.mipmap.ic_launcher);
+//                    MainActivity main = (MainActivity) getActivity();
+//                    drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
+//                    drawerLayout.openDrawer(GravityCompat.START);
+//
+//                }
+//            }
+//        });
         queryProvinces();
     }
 
     private void queryProvinces() {
         titleText.setText("中国");
-        backButton.setVisibility(View.VISIBLE);
         provinceList = DataSupport.findAll(Province.class);
         if (provinceList.size() > 0) {
             dataList.clear();
@@ -121,7 +150,6 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
 
     private void queryCities() {
         titleText.setText(selectedProvince.getProvinceName());
-        backButton.setVisibility(View.VISIBLE);
         cityList = DataSupport.where("provinceid=?"
                 , String.valueOf(selectedProvince.getId())).find(City.class);
         if (cityList.size() > 0) {
@@ -141,7 +169,6 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
 
     private void qureyCounties() {
         titleText.setText(selectedCity.getCityName());
-        backButton.setVisibility(View.VISIBLE);
         countyList = DataSupport.where("cityid=?"
                 , String.valueOf(selectedCity.getId())).find(County.class);
         if (countyList.size() > 0) {

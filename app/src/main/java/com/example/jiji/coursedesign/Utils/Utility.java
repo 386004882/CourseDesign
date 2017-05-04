@@ -1,6 +1,7 @@
 package com.example.jiji.coursedesign.Utils;
 
 import android.text.TextUtils;
+import android.view.Menu;
 
 import com.example.jiji.coursedesign.db.City;
 import com.example.jiji.coursedesign.db.County;
@@ -75,5 +76,27 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 隐藏和显示菜单
+     */
+    public static void hiddneMenu(Menu menu) {
+        if (menu != null) {
+            for (int i = 0; i < menu.size(); i++) {
+                menu.getItem(i).setVisible(false);
+            }
+        }
+    }
+
+    /**
+     * 显示菜单
+     */
+    public static void showMenu(Menu menu) {
+        if (menu != null) {
+            for (int i = 0; i < menu.size(); i++) {
+                menu.getItem(i).setVisible(true);
+            }
+        }
     }
 }

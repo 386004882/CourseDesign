@@ -1,6 +1,9 @@
 package com.example.jiji.coursedesign.UI;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 //侧滑栏点击更换碎片
                 switch (item.getItemId()) {
                     case R.id.nav_text:
+
                         replaceFragment(new TextFragment());
                         break;
                     case R.id.nav_photo:
@@ -53,7 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.nav_weather:
-                        replaceFragment(new ChooseAreaFragment());
+
+                        SharedPreferences prefs = PreferenceManager
+                                .getDefaultSharedPreferences(MainActivity.this);
+                        if (prefs.getString("weather", null) != null) {
+                            Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
+                            startActivity(intent);
+                        } else {
+                            replaceFragment(new ChooseAreaFragment());
+                        }
                         break;
                     case R.id.nav_cal:
 

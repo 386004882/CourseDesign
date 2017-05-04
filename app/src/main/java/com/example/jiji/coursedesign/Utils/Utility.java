@@ -6,6 +6,8 @@ import android.view.Menu;
 import com.example.jiji.coursedesign.db.City;
 import com.example.jiji.coursedesign.db.County;
 import com.example.jiji.coursedesign.db.Province;
+import com.example.jiji.coursedesign.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +78,21 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的json数据解析成weather实体类
+     */
+    public static Weather handleWeatherResponse(String resopnse) {
+        try {
+            JSONObject jsonObject = new JSONObject(resopnse);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

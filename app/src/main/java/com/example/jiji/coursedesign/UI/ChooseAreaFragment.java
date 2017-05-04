@@ -1,6 +1,7 @@
 package com.example.jiji.coursedesign.UI;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -106,28 +107,16 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     qureyCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
                 }
             }
         });
 
 
-//        //后退键逻辑
-//        backButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (currentLevel == LEVEL_COUNTY) {
-//                    queryCities();
-//                } else if (currentLevel == LEVEL_CITY) {
-//                    queryProvinces();
-//                } else if (currentLevel == LEVEL_PROVINCE) {
-//                    backButton.setBackgroundResource(R.mipmap.ic_launcher);
-//                    MainActivity main = (MainActivity) getActivity();
-//                    drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
-//                    drawerLayout.openDrawer(GravityCompat.START);
-//
-//                }
-//            }
-//        });
         queryProvinces();
     }
 

@@ -27,6 +27,9 @@
         <activity android:name=".UI.PhotoDetailActivity">
 
         </activity>
+        <activity android:name=".UI.ShowPhotoActivity">
+
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

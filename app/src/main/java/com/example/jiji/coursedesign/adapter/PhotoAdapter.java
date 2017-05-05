@@ -1,6 +1,7 @@
 package com.example.jiji.coursedesign.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.jiji.coursedesign.R;
+import com.example.jiji.coursedesign.UI.PhotoDetailActivity;
 import com.example.jiji.coursedesign.db.Photo;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         if (mcontext == null) {
             mcontext = parent.getContext();
         }
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item
                 , parent, false);
         final ViewHolder holder = new ViewHolder(view);
         holder.photoView.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +58,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                 //点击事件
                 int position = holder.getAdapterPosition();
                 Photo photo = photoList.get(position);
-                Toast.makeText(mcontext, "you click" + photo.getDescribe(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), PhotoDetailActivity.class);
+                intent.putExtra("imageUrl", photo.getImageUrl());
+                view.getContext().startActivity(intent);
+
             }
         });
         return holder;

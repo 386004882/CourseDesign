@@ -24,6 +24,9 @@
         <activity android:name=".UI.WeatherActivity">
 
         </activity>
+        <activity android:name=".UI.PhotoDetailActivity">
+
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

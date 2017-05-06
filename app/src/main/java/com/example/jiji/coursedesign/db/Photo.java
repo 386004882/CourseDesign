@@ -11,13 +11,14 @@ public class Photo extends DataSupport {
     private String imageUrl;
     private String time;
 
+
     public Photo(String describe, String imageUrl) {
         this.describe = describe;
         this.imageUrl = imageUrl;
     }
 
     public Photo() {
-        
+
     }
 
     public Photo(String describe, String imageUrl, String time) {

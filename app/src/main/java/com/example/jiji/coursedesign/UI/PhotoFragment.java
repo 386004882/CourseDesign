@@ -1,5 +1,6 @@
 package com.example.jiji.coursedesign.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -7,10 +8,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +35,9 @@ import org.litepal.crud.DataSupport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -106,7 +111,6 @@ public class PhotoFragment extends Fragment {
     //初始化图片列表
     private void initPhoto() {
         photoList.clear();
-        // TODO: 2017/5/4
         List<Photo> photoes = DataSupport.findAll(Photo.class);
         for (Photo p : photoes) {
             photoList.add(p);
@@ -147,7 +151,38 @@ public class PhotoFragment extends Fragment {
                 drawer.openDrawer(GravityCompat.START);
                 break;
             case R.id.item_delete:
-                Toast.makeText(getContext(), "testtest", Toast.LENGTH_SHORT).show();
+                final HashMap<Photo, Boolean> isCheckedMap = (HashMap) adapter.getIsCheckedMap();
+                if (isCheckedMap.size() > 0) {
+                    AlertDialog isDelete = new AlertDialog.Builder(getContext()).create();
+                    isDelete.setTitle("提示");
+                    isDelete.setMessage("确认删除？");
+                    isDelete.setButton(DialogInterface.BUTTON_POSITIVE, "确认"
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int i = 0;
+                                    for (Map.Entry<Photo, Boolean> entry : isCheckedMap.entrySet()) {
+                                        if (entry.getValue()) {
+                                            //复选框选中
+                                            DataSupport.deleteAll(Photo.class, "imageUrl=?", entry.getKey().getImageUrl());
+                                            i++;
+                                        }
+                                    }
+                                    initPhoto();
+                                    adapter.notifyDataSetChanged();
+                                    Snackbar.make(fab, "成功删除" + i + "个所选项", Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
+                    isDelete.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    isDelete.show();
+                } else {
+                    Toast.makeText(main, "请先选择删除项", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
         return true;

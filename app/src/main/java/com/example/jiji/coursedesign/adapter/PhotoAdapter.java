@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +16,9 @@ import com.example.jiji.coursedesign.R;
 import com.example.jiji.coursedesign.UI.PhotoDetailActivity;
 import com.example.jiji.coursedesign.db.Photo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jiji on 2017/5/4.
@@ -24,11 +27,14 @@ import java.util.List;
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
     private Context mcontext;
     private List<Photo> photoList;
+    private Map<Photo, Boolean> isCheckedMap = new HashMap<>();
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View photoView;
         CardView cardView;
         ImageView photoImage;
+        CheckBox checkBox;
+
         TextView photoDesc;
 
         public ViewHolder(View view) {
@@ -37,11 +43,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             cardView = (CardView) view;
             photoImage = (ImageView) view.findViewById(R.id.photo_image);
             photoDesc = (TextView) view.findViewById(R.id.photo_desc);
+            checkBox = (CheckBox) view.findViewById(R.id.photo_isdelete);
         }
     }
 
     public PhotoAdapter(List<Photo> photoList) {
         this.photoList = photoList;
+        for (Photo photo : photoList) {
+            isCheckedMap.put(photo, false);
+        }
     }
 
     @Override
@@ -56,22 +66,51 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 //点击事件
-                int position = holder.getAdapterPosition();
-                Photo photo = photoList.get(position);
-                Intent intent = new Intent(view.getContext(), PhotoDetailActivity.class);
-                intent.putExtra("imageUrl", photo.getImageUrl());
-                view.getContext().startActivity(intent);
-
+                if (holder.checkBox.getVisibility() == View.VISIBLE) {
+                    //复选框出现时
+                    if (holder.checkBox.isChecked()) {
+                        holder.checkBox.setChecked(false);
+                    } else {
+                        holder.checkBox.setChecked(true);
+                    }
+                } else {
+                    //复选框隐藏时打开详情
+                    int position = holder.getAdapterPosition();
+                    Photo photo = photoList.get(position);
+                    Intent intent = new Intent(view.getContext(), PhotoDetailActivity.class);
+                    intent.putExtra("imageUrl", photo.getImageUrl());
+                    view.getContext().startActivity(intent);
+                }
             }
         });
+        //长按删除事件
         holder.photoView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
+                int position = holder.getAdapterPosition();
+                Photo photo = photoList.get(position);
+                if (holder.checkBox.getVisibility() == View.VISIBLE) {
+                    //显示时,讲checkbox隐藏
+                    holder.checkBox.setVisibility(View.INVISIBLE);
+                    isCheckedMap.put(photo, false);
+                    holder.checkBox.setChecked(false);
+                } else if (holder.checkBox.getVisibility() == View.INVISIBLE) {
+                    //隐藏时
+                    holder.checkBox.setVisibility(View.VISIBLE);
+                    isCheckedMap.put(photo, true);
+                    holder.checkBox.setChecked(true);
+                }
                 return true;
             }
         });
         return holder;
+    }
+
+    public Map<Photo, Boolean> getIsCheckedMap() {
+        for (Photo photo : photoList) {
+
+        }
+        return isCheckedMap;
     }
 
     @Override

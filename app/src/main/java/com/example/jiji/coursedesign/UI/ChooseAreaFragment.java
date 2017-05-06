@@ -62,7 +62,6 @@ public class ChooseAreaFragment extends android.support.v4.app.Fragment {
         main = (MainActivity) getActivity();
         View view = inflater.inflate(R.layout.choose_area, container, false);
         titleText = (TextView) main.findViewById(R.id.title_text);
-        //backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);

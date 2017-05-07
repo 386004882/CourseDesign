@@ -160,8 +160,15 @@ public class TextFragment extends Fragment {
                 }
                 break;
             case R.id.item_setting://设置
+                //暂时为打开小游戏
+                Intent intent = new Intent(getContext(), GameActivity.class);
+                startActivity(intent);
 
                 break;
+            case R.id.item_backup:
+                //暂时为退出登录
+                getContext().getSharedPreferences("user", Context.MODE_PRIVATE)
+                        .edit().clear().apply();
 
         }
         return true;

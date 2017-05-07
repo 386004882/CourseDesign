@@ -15,14 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.jiji.coursedesign.R;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 // TODO: 2017/5/7 添加打开抽屉动画
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private CircleImageView icon_image;
     private Toolbar toolbar;
+    private TextView navUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +38,19 @@ public class MainActivity extends AppCompatActivity {
         //默认加载文字备忘碎片
         replaceFragment(new TextFragment());
 
+        View nav = View.inflate(this, R.layout.nav_header, null);
 
         //侧滑菜单
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navUsername = (TextView) nav.findViewById(R.id.nav_username);
+        icon_image = (CircleImageView) nav.findViewById(R.id.icon_image);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+
+        SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
+        String username = sp.getString("username", "");
+        if (!username.equals("")) {
+            navUsername.setText(username);
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_tools:
                         //更多工具正在开发中
+
                         break;
                 }
                 drawerLayout.closeDrawers();
@@ -84,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //打开小游戏
+        icon_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     //更换碎片

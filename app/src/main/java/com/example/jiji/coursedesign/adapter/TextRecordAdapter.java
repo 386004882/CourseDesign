@@ -2,7 +2,6 @@ package com.example.jiji.coursedesign.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,56 +10,54 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.jiji.coursedesign.R;
-import com.example.jiji.coursedesign.UI.PhotoDetailActivity;
-import com.example.jiji.coursedesign.db.Photo;
+import com.example.jiji.coursedesign.UI.TextDetailActivity;
+import com.example.jiji.coursedesign.db.TextRecord;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by jiji on 2017/5/4.
+ * Created by jiji on 2017/5/6.
  */
 
-public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
+public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.ViewHolder> {
     private Context mcontext;
-    private List<Photo> photoList;
-    private Map<Photo, Boolean> isCheckedMap = new HashMap<>();
+    private List<TextRecord> textRecordList;
+    private Map<TextRecord, Boolean> isCheckedMap = new HashMap<>();
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        View photoView;
-        CardView cardView;
-        ImageView photoImage;
+        View textView;
+        TextView content;
+        TextView alertTime;
         CheckBox checkBox;
-
-        TextView photoDesc;
+        ImageView icon;
 
         public ViewHolder(View view) {
             super(view);
-            photoView = view;
-            cardView = (CardView) view;
-            photoImage = (ImageView) view.findViewById(R.id.photo_image);
-            photoDesc = (TextView) view.findViewById(R.id.photo_desc);
-            checkBox = (CheckBox) view.findViewById(R.id.photo_isdelete);
+            textView = view;
+            content = (TextView) view.findViewById(R.id.text_content);
+            alertTime = (TextView) view.findViewById(R.id.text_alerttime);
+            checkBox = (CheckBox) view.findViewById(R.id.text_isdelete);
+            icon = (ImageView) view.findViewById(R.id.alertIcon);
         }
     }
 
-    public PhotoAdapter(List<Photo> photoList) {
-        this.photoList = photoList;
-        initIsCheckMap();
+    public TextRecordAdapter(List<TextRecord> textRecordList) {
+        this.textRecordList = textRecordList;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TextRecordAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         if (mcontext == null) {
             mcontext = parent.getContext();
         }
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.textrecord_item
                 , parent, false);
         final ViewHolder holder = new ViewHolder(view);
-        holder.photoView.setOnClickListener(new View.OnClickListener() {
+        holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击事件
@@ -74,28 +71,29 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                 } else {
                     //复选框隐藏时打开详情
                     int position = holder.getAdapterPosition();
-                    Photo photo = photoList.get(position);
-                    Intent intent = new Intent(view.getContext(), PhotoDetailActivity.class);
-                    intent.putExtra("imageUrl", photo.getImageUrl());
+                    TextRecord record = textRecordList.get(position);
+
+                    Intent intent = new Intent(view.getContext(), TextDetailActivity.class);
+                    intent.putExtra("textId", record.getId());
                     view.getContext().startActivity(intent);
                 }
             }
         });
         //长按删除事件
-        holder.photoView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 int position = holder.getAdapterPosition();
-                Photo photo = photoList.get(position);
+                TextRecord record = textRecordList.get(position);
                 if (holder.checkBox.getVisibility() == View.VISIBLE) {
                     //显示时,讲checkbox隐藏
                     holder.checkBox.setVisibility(View.INVISIBLE);
-                    isCheckedMap.put(photo, false);
+                    isCheckedMap.put(record, false);
                     holder.checkBox.setChecked(false);
                 } else if (holder.checkBox.getVisibility() == View.INVISIBLE) {
                     //隐藏时
                     holder.checkBox.setVisibility(View.VISIBLE);
-                    isCheckedMap.put(photo, true);
+                    isCheckedMap.put(record, true);
                     holder.checkBox.setChecked(true);
                 }
                 return true;
@@ -104,27 +102,29 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         return holder;
     }
 
-    public Map<Photo, Boolean> getIsCheckedMap() {
+    public Map<TextRecord, Boolean> getIsCheckedMap() {
         return isCheckedMap;
     }
 
-    public void initIsCheckMap() {
-
-        for (Photo photo : photoList) {
-            isCheckedMap.put(photo, false);
+    public void initIsCheckerMap() {
+        for (TextRecord record : textRecordList) {
+            isCheckedMap.put(record, false);
         }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Photo photo = photoList.get(position);
-        holder.photoDesc.setText(photo.getDescribe());
-        Glide.with(mcontext).load(photo.getImageUrl()).into(holder.photoImage);
+    public void onBindViewHolder(TextRecordAdapter.ViewHolder holder, int position) {
+        TextRecord tr = textRecordList.get(position);
+        holder.content.setText(tr.getContent());
+        if (tr.getAlertTime() == null || tr.getAlertTime().equals("")) {
+            holder.icon.setVisibility(View.INVISIBLE);
+        } else {
+            holder.alertTime.setText(tr.getAlertTime());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return photoList.size();
+        return textRecordList.size();
     }
-
 }

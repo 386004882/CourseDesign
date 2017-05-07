@@ -45,6 +45,8 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Created by jiji on 2017/5/3.
  */
+// TODO: 2017/5/7  添加从相册选择图片
+
 
 public class PhotoFragment extends Fragment {
     private MainActivity main;
@@ -151,8 +153,18 @@ public class PhotoFragment extends Fragment {
                 drawer.openDrawer(GravityCompat.START);
                 break;
             case R.id.item_delete:
+                //删除按钮逻辑
                 final HashMap<Photo, Boolean> isCheckedMap = (HashMap) adapter.getIsCheckedMap();
-                if (isCheckedMap.size() > 0) {
+                int i = 0;
+                final List<Photo> delList = new ArrayList<>();
+                for (Map.Entry<Photo, Boolean> entry : isCheckedMap.entrySet()) {
+                    if (entry.getValue()) {
+                        //复选框选中
+                        delList.add(entry.getKey());
+                        i++;
+                    }
+                }
+                if (i > 0) {
                     AlertDialog isDelete = new AlertDialog.Builder(getContext()).create();
                     isDelete.setTitle("提示");
                     isDelete.setMessage("确认删除？");
@@ -161,14 +173,12 @@ public class PhotoFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     int i = 0;
-                                    for (Map.Entry<Photo, Boolean> entry : isCheckedMap.entrySet()) {
-                                        if (entry.getValue()) {
-                                            //复选框选中
-                                            DataSupport.deleteAll(Photo.class, "imageUrl=?", entry.getKey().getImageUrl());
-                                            i++;
-                                        }
+                                    for (Photo p : delList) {
+                                        DataSupport.deleteAll(Photo.class, "imageUrl=?", p.getImageUrl());
+                                        i++;
                                     }
                                     initPhoto();
+                                    adapter.initIsCheckMap();
                                     adapter.notifyDataSetChanged();
                                     Snackbar.make(fab, "成功删除" + i + "个所选项", Snackbar.LENGTH_SHORT).show();
                                 }
@@ -181,7 +191,7 @@ public class PhotoFragment extends Fragment {
                     });
                     isDelete.show();
                 } else {
-                    Toast.makeText(main, "请先选择删除项", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(main, "请长按选择删除项", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

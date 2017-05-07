@@ -19,8 +19,8 @@
             android:title="@string/weather" />
 
         <item
-            android:id="@+id/nav_cal"
+            android:id="@+id/nav_tools"
             android:icon="@mipmap/ic_launcher"
-            android:title="@string/cal" />
+            android:title="@string/tools" />
     </group>
 </menu>

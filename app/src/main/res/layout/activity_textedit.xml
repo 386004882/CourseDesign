@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/text_edit_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/text_edit_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true" />
+
+            <Button
+                android:id="@+id/text_edit_ok"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:id="@+id/text_edit_textlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/text_edit_datetext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#2000"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:hint="暂未设置提醒日期"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/text_edit_timetext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#2000"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:hint="暂未设置提醒时间"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/text_edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/text_edit_textlayout"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:gravity="start"
+        android:textSize="24sp" />
+
+</RelativeLayout>

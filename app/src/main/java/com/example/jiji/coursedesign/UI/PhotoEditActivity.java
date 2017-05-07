@@ -45,6 +45,7 @@ public class PhotoEditActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //获取传递的图片路径
         Intent intent = getIntent();
         final String imageUrl = intent.getStringExtra("imageUri");
         final Uri imageUri = Uri.parse(imageUrl);
@@ -59,7 +60,7 @@ public class PhotoEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //获取当前时间
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日   HH:mm:ss");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
                 Date curDate = new Date(System.currentTimeMillis());
                 String date = formatter.format(curDate);
                 //把数据存入数据库中

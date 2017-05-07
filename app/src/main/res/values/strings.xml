@@ -4,5 +4,5 @@
     <string name="photo">图片标签</string>
     <string name="paint">随手涂鸦</string>
     <string name="weather">天气概况</string>
-    <string name="cal">计算器</string>
+    <string name="tools">更多工具</string>
 </resources>

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import com.example.jiji.coursedesign.R;
 
+// TODO: 2017/5/7 添加打开抽屉动画
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_paint:
 
+                        Intent paintIntent = new Intent(getApplicationContext(), PaintActivity.class);
+                        startActivity(paintIntent);
                         break;
                     case R.id.nav_weather:
 
@@ -72,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
                             replaceFragment(new ChooseAreaFragment());
                         }
                         break;
-                    case R.id.nav_cal:
-
+                    case R.id.nav_tools:
+                        //更多工具正在开发中
                         break;
                 }
                 drawerLayout.closeDrawers();
@@ -116,4 +119,6 @@ public class MainActivity extends AppCompatActivity {
         isExit.show();
         // super.onBackPressed();
     }
+
+
 }

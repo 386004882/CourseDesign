@@ -54,8 +54,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (username.equals(usernameTv.getText().toString())
                         && pwd.equals(pwdTv.getText().toString())) {
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "请输入正确的用户名和密码", Toast.LENGTH_SHORT).show();
                 }

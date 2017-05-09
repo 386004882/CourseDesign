@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.jiji.coursedesign.R;
 
@@ -39,23 +40,28 @@ public class GameActivity extends AppCompatActivity {
         String srcRes;
         String afterRes;
 
-        int number = (int) (Math.random() * 15);
-        if (number == 0) {
-            srcRes = "src/mnsrc0.jpg";
+        int number = (int) (Math.random() * 25);
+        Toast.makeText(this, number + "", Toast.LENGTH_SHORT).show();
+        if (number > 19) {
+            srcRes = "src/mnsrc16.jpg";
             int mnlsNum = (int) (Math.random() * 10);
             afterRes = "mnls/mnls" + mnlsNum + ".jpg";
-        } else if (number == 1) {
-            srcRes = "src/mnsrc1.jpg";
+            Toast.makeText(this, mnlsNum + "", Toast.LENGTH_SHORT).show();
+        } else if (number == 15 || number == 16 || number == 0 || number == 1) {
+            srcRes = "src/mnsrc15.jpg";
             int ekNum = (int) (Math.random() * 10);
             afterRes = "ek/ek" + ekNum + ".jpg";
-        } else if (number == 2) {
+            Toast.makeText(this, ekNum + "", Toast.LENGTH_SHORT).show();
+        } else if (number == 2 || number == 17 || number == 18 || number == 19) {
             srcRes = "src/mnsrc2.jpg";
             int dfNum = (int) (Math.random() * 20);
             afterRes = "df/df" + dfNum + ".jpg";
+            Toast.makeText(this, dfNum + "", Toast.LENGTH_SHORT).show();
         } else {
             srcRes = "src/mnsrc" + number + ".jpg";
-            int mnNum = (int) (Math.random() * 20);
+            int mnNum = (int) (Math.random() * 19);
             afterRes = "mn/mn" + mnNum + ".jpg";
+            Toast.makeText(this, mnNum + "", Toast.LENGTH_SHORT).show();
 
         }
 

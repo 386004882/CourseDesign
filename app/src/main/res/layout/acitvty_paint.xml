@@ -17,11 +17,13 @@
                 android:id="@+id/paint_back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:background="@drawable/ic_action_arrow_left"
                 android:layout_centerVertical="true" />
 
             <Button
                 android:id="@+id/paint_save"
                 android:layout_width="30dp"
+                android:background="@drawable/ic_action_tick"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"

@@ -14,12 +14,31 @@
         android:title=""
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <Button
-            android:id="@+id/photoedit_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@mipmap/ic_launcher" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/photoedit_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_action_arrow_left" />
+
+            <Button
+                android:id="@+id/photoedit_submit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_action_tick"/>
+        </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
+
 
     <ImageView
         android:id="@+id/photoedit_img"
@@ -42,13 +61,6 @@
             android:gravity="start"
             android:hint="请写下你对图片的描述" />
 
-        <Button
-            android:id="@+id/photoedit_submit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="确认" />
     </LinearLayout>
 
 </LinearLayout>

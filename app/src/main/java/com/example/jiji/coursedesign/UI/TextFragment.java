@@ -1,6 +1,5 @@
 package com.example.jiji.coursedesign.UI;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -188,19 +187,6 @@ public class TextFragment extends Fragment {
 
     public static MainActivity getInstance() {
         return instance;
-    }
-
-    public class TextDataChangeBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            getInstance().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    initText();
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        }
     }
 
 }

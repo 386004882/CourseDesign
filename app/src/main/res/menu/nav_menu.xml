@@ -3,24 +3,29 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_text"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_action_tag"
             android:title="@string/text" />
         <item
             android:id="@+id/nav_photo"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_action_camera_blue"
             android:title="@string/photo" />
         <item
             android:id="@+id/nav_paint"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_action_brush"
             android:title="@string/paint" />
         <item
             android:id="@+id/nav_weather"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_action_cloudy"
             android:title="@string/weather" />
 
         <item
             android:id="@+id/nav_tools"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_action_dropbox"
             android:title="@string/tools" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_action_gear"
+            android:title="设置" />
+
     </group>
 </menu>

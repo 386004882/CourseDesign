@@ -30,7 +30,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@id/text_alerttime"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_action_alarm" />
 
     <TextView
         android:id="@+id/text_content"

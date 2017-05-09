@@ -76,6 +76,22 @@ public class PhotoFragment extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         photoRecycler.setLayoutManager(layoutManager);
         adapter = new PhotoAdapter(photoList);
+        adapter.setRecyclerViewOnClickListener(
+                new PhotoAdapter.RecyclerViewOnItemClickListener() {
+                    @Override
+                    public void onItemClickListener(View view, int position) {
+                        adapter.setSelectItem(position);
+                    }
+
+                    @Override
+                    public boolean onItemLongClickListener(View view, int position) {
+                        adapter.setShowBox();
+                        adapter.setSelectItem(position);
+                        adapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
+
         photoRecycler.setAdapter(adapter);
 
         /**
@@ -133,6 +149,7 @@ public class PhotoFragment extends Fragment {
                 if (resultCode == 20) {
                     //通知列表更新
                     initPhoto();
+
                     adapter.notifyDataSetChanged();
                 }
         }
@@ -154,10 +171,10 @@ public class PhotoFragment extends Fragment {
                 break;
             case R.id.item_delete:
                 //删除按钮逻辑
-                final HashMap<Photo, Boolean> isCheckedMap = (HashMap) adapter.getIsCheckedMap();
+                final HashMap<Integer, Boolean> isCheckedMap = (HashMap) adapter.getIsCheckedMap();
                 int i = 0;
-                final List<Photo> delList = new ArrayList<>();
-                for (Map.Entry<Photo, Boolean> entry : isCheckedMap.entrySet()) {
+                final List<Integer> delList = new ArrayList<>();
+                for (Map.Entry<Integer, Boolean> entry : isCheckedMap.entrySet()) {
                     if (entry.getValue()) {
                         //复选框选中
                         delList.add(entry.getKey());
@@ -173,12 +190,14 @@ public class PhotoFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     int i = 0;
-                                    for (Photo p : delList) {
-                                        DataSupport.deleteAll(Photo.class, "imageUrl=?", p.getImageUrl());
+                                    for (Integer position : delList) {
+                                        DataSupport.deleteAll(Photo.class, "imageUrl=?"
+                                                , photoList.get(position).getImageUrl());
                                         i++;
                                     }
                                     initPhoto();
                                     adapter.initIsCheckMap();
+                                    adapter.setShowBox();
                                     adapter.notifyDataSetChanged();
                                     Snackbar.make(fab, "成功删除" + i + "个所选项", Snackbar.LENGTH_SHORT).show();
                                 }

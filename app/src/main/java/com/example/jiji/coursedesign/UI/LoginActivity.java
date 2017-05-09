@@ -15,7 +15,7 @@ import com.example.jiji.coursedesign.R;
 /**
  * Created by jiji on 2017/5/7.
  */
-// TODO: 2017/5/7 为登录注册模块添加联网操作及相关判断
+// TODO: 2017/5/7 为登录注册模块添加联网操作及相关判断,加入个人信息
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameTv;
     private EditText pwdTv;
@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!user.equals("")) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
 
         usernameTv = (EditText) findViewById(R.id.login_username);
@@ -62,6 +63,5 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 }

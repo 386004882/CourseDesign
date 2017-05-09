@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView icon_image;
     private Toolbar toolbar;
     private TextView navUsername;
+    private NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         //默认加载文字备忘碎片
         replaceFragment(new TextFragment());
 
-        View nav = View.inflate(this, R.layout.nav_header, null);
 
         //侧滑菜单
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navView = (NavigationView) findViewById(R.id.nav_view);
+        View nav = LayoutInflater.from(this).inflate(R.layout.nav_header, navView);
         navUsername = (TextView) nav.findViewById(R.id.nav_username);
         icon_image = (CircleImageView) nav.findViewById(R.id.icon_image);
-        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
 
         SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
         String username = sp.getString("username", "");
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null) {
             //左上方显示侧滑按钮
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
         navView.setCheckedItem(R.id.nav_text);//默认选中
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -71,13 +74,14 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new TextFragment());
                         break;
                     case R.id.nav_photo:
-
                         replaceFragment(new PhotoFragment());
                         break;
                     case R.id.nav_paint:
 
                         Intent paintIntent = new Intent(getApplicationContext(), PaintActivity.class);
                         startActivity(paintIntent);
+                        navView.setCheckedItem(R.id.nav_text);
+                        replaceFragment(new TextFragment());
                         break;
                     case R.id.nav_weather:
 
@@ -86,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         if (prefs.getString("weather", null) != null) {
                             Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
                             startActivity(intent);
+                            replaceFragment(new TextFragment());
                         } else {
                             replaceFragment(new ChooseAreaFragment());
                         }
@@ -93,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_tools:
                         //更多工具正在开发中
 
+                        break;
+                    case R.id.nav_setting:
                         break;
                 }
                 drawerLayout.closeDrawers();

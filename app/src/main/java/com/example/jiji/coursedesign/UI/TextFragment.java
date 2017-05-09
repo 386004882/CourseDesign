@@ -68,6 +68,21 @@ public class TextFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         textRecycler.setLayoutManager(manager);
         adapter = new TextRecordAdapter(textRecordList);
+        adapter.setRecyclerViewOnClickListener(new TextRecordAdapter.RecyclerViewOnItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                adapter.setSelectItem(position);
+            }
+
+            @Override
+            public boolean onItemLongClickListener(View view, int position) {
+                adapter.setShowBox();
+                adapter.setSelectItem(position);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
         textRecycler.setAdapter(adapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -118,10 +133,10 @@ public class TextFragment extends Fragment {
                 break;
             case R.id.item_delete:
                 //删除按钮逻辑
-                final HashMap<TextRecord, Boolean> isCheckedMap = (HashMap) adapter.getIsCheckedMap();
+                final HashMap<Integer, Boolean> isCheckedMap = (HashMap) adapter.getIsCheckedMap();
                 int i = 0;
-                final List<TextRecord> delList = new ArrayList<>();
-                for (Map.Entry<TextRecord, Boolean> entry : isCheckedMap.entrySet()) {
+                final List<Integer> delList = new ArrayList<>();
+                for (Map.Entry<Integer, Boolean> entry : isCheckedMap.entrySet()) {
                     if (entry.getValue()) {
                         //复选框选中
                         delList.add(entry.getKey());
@@ -137,12 +152,14 @@ public class TextFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     int i = 0;
-                                    for (TextRecord textRecord : delList) {
-                                        DataSupport.deleteAll(TextRecord.class, "id=?", textRecord.getId() + "");
+                                    for (Integer position : delList) {
+                                        DataSupport.deleteAll(TextRecord.class, "id=?"
+                                                , textRecordList.get(position).getId() + "");
                                         i++;
                                     }
                                     initText();
-                                    adapter.initIsCheckerMap();
+                                    adapter.initIsCheckedMap();
+                                    adapter.setShowBox();
                                     adapter.notifyDataSetChanged();
                                     Snackbar.make(fab, "成功删除" + i + "个所选项", Snackbar.LENGTH_SHORT).show();
                                 }

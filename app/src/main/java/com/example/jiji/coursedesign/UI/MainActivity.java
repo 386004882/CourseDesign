@@ -20,6 +20,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.jiji.coursedesign.R;
+import com.example.jiji.coursedesign.db.User;
+
+import org.litepal.crud.DataSupport;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -29,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private CircleImageView icon_image;
     private Toolbar toolbar;
-    private TextView navUsername;
+    private TextView navName;
+    private TextView signature;
     private NavigationView navView;
 
     @Override
@@ -45,13 +49,18 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.nav_view);
         View nav = LayoutInflater.from(this).inflate(R.layout.nav_header, navView);
-        navUsername = (TextView) nav.findViewById(R.id.nav_username);
+        navName = (TextView) nav.findViewById(R.id.nav_username);
         icon_image = (CircleImageView) nav.findViewById(R.id.icon_image);
+        signature = (TextView) nav.findViewById(R.id.nav_signature);
 
         SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
         String username = sp.getString("username", "");
         if (!username.equals("")) {
-            navUsername.setText(username);
+            User saveUser = DataSupport.where("username=?", username).findFirst(User.class);
+            if (saveUser != null) {
+                navName.setText(saveUser.getName());
+                signature.setText(saveUser.getSignature());
+            }
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -108,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //打开小游戏
-        navUsername.setOnClickListener(new View.OnClickListener() {
+        navName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, GameActivity.class);

@@ -8,11 +8,12 @@ import org.litepal.crud.DataSupport;
 
 public class User extends DataSupport {
     private String username;
+    private String photoUrl;
     private String name;
     private String password;
     private String photoUri;
     private String time;
-    private String describe;
+    private String signature;
 
     public String getUsername() {
         return username;
@@ -25,6 +26,7 @@ public class User extends DataSupport {
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -54,11 +56,19 @@ public class User extends DataSupport {
         this.time = time;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getSignature() {
+        return signature;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

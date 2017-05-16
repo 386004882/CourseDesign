@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jiji.coursedesign.R;
+import com.example.jiji.coursedesign.db.User;
+
+import org.litepal.crud.DataSupport;
+
 
 /**
  * Created by jiji on 2017/5/7.
@@ -26,8 +30,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
-        String user = sp.getString("username", "");
-        if (!user.equals("")) {
+        String saveUsername = sp.getString("username", "");
+        if (!saveUsername.equals("")) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -49,17 +53,23 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
-                String username = sp.getString("username", "");
-                String pwd = sp.getString("password", "");
-
-                if (username.equals(usernameTv.getText().toString())
-                        && pwd.equals(pwdTv.getText().toString())) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                String username = usernameTv.getText().toString();
+                String pwd = pwdTv.getText().toString();
+                if (!username.equals("") && !pwd.equals("")) {
+                    User user = DataSupport.where("username=?", username).findFirst(User.class);
+                    if (user != null && user.getPassword().equals(pwd)) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", username);
+                        editor.apply();
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "密码不正确或用户不存", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(LoginActivity.this, "请输入正确的用户名和密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -15,7 +15,7 @@
 
 
     <TextView
-        android:id="@+id/decribe"
+        android:id="@+id/nav_signature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -27,7 +27,7 @@
         android:id="@+id/nav_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/decribe"
+        android:layout_above="@id/nav_signature"
         android:text="TestName"
         android:textColor="#FFF"
         android:textSize="14sp" />

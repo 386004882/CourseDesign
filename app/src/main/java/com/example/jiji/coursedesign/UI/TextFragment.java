@@ -45,7 +45,6 @@ public class TextFragment extends Fragment {
     private RecyclerView textRecycler;
     private List<TextRecord> textRecordList = new ArrayList<>();
     private TextRecordAdapter adapter;
-    private static MainActivity instance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,13 +75,12 @@ public class TextFragment extends Fragment {
 
             @Override
             public boolean onItemLongClickListener(View view, int position) {
+                adapter.initIsCheckedMap();
                 adapter.setShowBox();
-                adapter.setSelectItem(position);
                 adapter.notifyDataSetChanged();
                 return true;
             }
         });
-
         textRecycler.setAdapter(adapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +91,6 @@ public class TextFragment extends Fragment {
                 startActivityForResult(intent, 1);
             }
         });
-        instance = (MainActivity) getActivity();
 
     }
 
@@ -151,17 +148,17 @@ public class TextFragment extends Fragment {
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    int i = 0;
+                                    int j = 0;
                                     for (Integer position : delList) {
                                         DataSupport.deleteAll(TextRecord.class, "id=?"
                                                 , textRecordList.get(position).getId() + "");
-                                        i++;
+                                        j++;
                                     }
                                     initText();
                                     adapter.initIsCheckedMap();
                                     adapter.setShowBox();
                                     adapter.notifyDataSetChanged();
-                                    Snackbar.make(fab, "成功删除" + i + "个所选项", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(fab, "成功删除" + j + "个所选项", Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                     isDelete.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
@@ -172,20 +169,18 @@ public class TextFragment extends Fragment {
                     });
                     isDelete.show();
                 } else {
-                    Toast.makeText(main, "请长按选择删除项", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(main, "长按选择删除项", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.item_setting://设置
-                //暂时为打开小游戏
-                Intent intent = new Intent(getContext(), GameActivity.class);
-                startActivity(intent);
-
-                break;
-            case R.id.item_backup:
                 //暂时为退出登录
                 getContext().getSharedPreferences("user", Context.MODE_PRIVATE)
                         .edit().clear().apply();
 
+                break;
+            case R.id.item_backup:
+
+                break;
         }
         return true;
     }
@@ -197,13 +192,9 @@ public class TextFragment extends Fragment {
                 initText();
                 adapter.notifyDataSetChanged();
                 break;
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public static MainActivity getInstance() {
-        return instance;
-    }
 
 }

@@ -113,13 +113,12 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int position = holder.getAdapterPosition();
                 //点击事件
                 if (holder.checkBox.getVisibility() == View.INVISIBLE
                         && !holder.checkBox.isChecked()) {
-                    int position = holder.getAdapterPosition();
                     //复选框隐藏时打开详情
                     TextRecord record = textRecordList.get(position);
-
                     Intent intent = new Intent(view.getContext(), TextDetailActivity.class);
                     intent.putExtra("textId", record.getId());
                     view.getContext().startActivity(intent);

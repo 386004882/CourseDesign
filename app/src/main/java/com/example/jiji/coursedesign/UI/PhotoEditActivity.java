@@ -46,7 +46,7 @@ public class PhotoEditActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //获取传递的图片路径
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         final String imageUrl = intent.getStringExtra("imageUri");
         final Uri imageUri = Uri.parse(imageUrl);
         try {
@@ -78,6 +78,7 @@ public class PhotoEditActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(RESULT_CANCELED, new Intent());
                 finish();
             }
         });

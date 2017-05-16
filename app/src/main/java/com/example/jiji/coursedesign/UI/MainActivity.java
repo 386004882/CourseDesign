@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent paintIntent = new Intent(getApplicationContext(), PaintActivity.class);
                         startActivity(paintIntent);
                         navView.setCheckedItem(R.id.nav_text);
-                        replaceFragment(new TextFragment());
+                        replaceFragment(new PhotoFragment());
                         break;
                     case R.id.nav_weather:
 
@@ -108,13 +108,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //打开小游戏
-        icon_image.setOnClickListener(new View.OnClickListener() {
+        navUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, GameActivity.class);
                 startActivity(i);
             }
         });
+
+        //打开个人页面
+        icon_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     //更换碎片

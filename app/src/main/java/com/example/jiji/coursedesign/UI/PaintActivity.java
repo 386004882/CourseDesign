@@ -1,5 +1,6 @@
 package com.example.jiji.coursedesign.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
@@ -141,6 +143,37 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 4://判断是否在编辑页面返回
+                if (resultCode == 20) {
+                    finish();
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog isExit = new AlertDialog.Builder(this).create();
+        isExit.setTitle("系统提示");
+        isExit.setMessage("是否不保存涂鸦?");
+        isExit.setButton(DialogInterface.BUTTON_POSITIVE, "确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        isExit.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        isExit.show();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.paint_save://保存
@@ -158,14 +191,28 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
                     }
                     Intent intent = new Intent(this, PhotoEditActivity.class);
                     intent.putExtra("imageUri", imageUri.toString());
-                    startActivity(intent);
-                    finish();
+                    //打开编辑页面
+                    startActivityForResult(intent, 4);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.paint_back://返回
-                finish();
+                AlertDialog isExit = new AlertDialog.Builder(this).create();
+                isExit.setTitle("系统提示");
+                isExit.setMessage("是否不保存涂鸦?");
+                isExit.setButton(DialogInterface.BUTTON_POSITIVE, "确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                isExit.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                isExit.show();
                 break;
             case R.id.paint_color://选择颜色
                 if (tools.getVisibility() == View.INVISIBLE) {

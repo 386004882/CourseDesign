@@ -113,11 +113,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
         holder.photoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int position = holder.getAdapterPosition();
                 //点击事件
                 if (holder.checkBox.getVisibility() == View.INVISIBLE
                         && !holder.checkBox.isChecked()) {
                     //复选框隐藏时打开详情
-                    int position = holder.getAdapterPosition();
                     Photo photo = photoList.get(position);
                     Intent intent = new Intent(view.getContext(), PhotoDetailActivity.class);
                     intent.putExtra("imageUrl", photo.getImageUrl());

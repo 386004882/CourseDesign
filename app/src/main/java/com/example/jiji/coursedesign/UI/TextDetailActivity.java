@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -62,26 +64,34 @@ public class TextDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isEDITABLE == 1) {
                     //如果当前是可编辑状态，点击保存
-                    TextRecord textRecord = new TextRecord();
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd HH:mm:ss");
-                    Date curDate = new Date(System.currentTimeMillis());
-                    String now = formatter.format(curDate);
-                    textRecord.setAlertTime(text.getAlertTime());
-                    textRecord.setTime(now);
-                    textRecord.setContent(content.getText().toString());
-                    textRecord.updateAll("id=?", textId + "");
-                    Toast.makeText(TextDetailActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent();
-                    intent.setAction("com.example.jiji.coursedesign.textdatechange");
-                    sendBroadcast(intent);
+                    String newContent = content.getText().toString();
+                    if (!newContent.equals(text.getContent())) {
+                        TextRecord textRecord = new TextRecord();
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd HH:mm:ss");
+                        Date curDate = new Date(System.currentTimeMillis());
+                        String now = formatter.format(curDate);
+                        textRecord.setAlertTime(text.getAlertTime());
+                        textRecord.setTime(now);
+                        textRecord.setContent(content.getText().toString());
+                        textRecord.updateAll("id=?", textId + "");
+                        Toast.makeText(TextDetailActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                    }
+                    Animation as_show = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_alpha);
+                    edit.startAnimation(as_show);
+                    edit.setBackgroundResource(R.drawable.ic_action_font_faces);
+                    content.setFocusable(false);
+                    content.setFocusableInTouchMode(false);
                     isEDITABLE = 0;
                 } else if (isEDITABLE == 0) {
                     //不可编辑变可编辑
                     content.setFocusable(true);
-                    content.requestFocus();
                     content.setFocusableInTouchMode(true);
-                    Toast.makeText(TextDetailActivity.this, "已更改为可编辑,再次点击按钮保存", Toast.LENGTH_SHORT).show();
-                    // TODO: 2017/5/6 添加按钮更改
+                    content.requestFocus();
+                    //添加动画
+                    edit.setBackgroundResource(R.drawable.ic_action_tick);
+                    Animation as_show = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_alpha);
+                    edit.startAnimation(as_show);
+                    Toast.makeText(TextDetailActivity.this, "已变为可编辑", Toast.LENGTH_SHORT).show();
                     isEDITABLE = 1;
                 }
             }

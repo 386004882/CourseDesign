@@ -1,15 +1,24 @@
 package com.example.jiji.coursedesign.UI;
 
+import android.Manifest;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -85,8 +94,8 @@ public class PhotoFragment extends Fragment {
 
                     @Override
                     public boolean onItemLongClickListener(View view, int position) {
+                        adapter.initIsCheckMap();
                         adapter.setShowBox();
-                        adapter.setSelectItem(position);
                         adapter.notifyDataSetChanged();
                         return true;
                     }
@@ -104,27 +113,53 @@ public class PhotoFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File outputImage = new File(getContext().getExternalCacheDir()
-                        , System.currentTimeMillis() + ".jpg");
-                try {
-                    outputImage.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (Build.VERSION.SDK_INT >= 24) {
-                    imageUri = FileProvider.getUriForFile(getContext()
-                            , "com.example.jiji.coursedesign.fileprovider", outputImage);
-                } else {
-                    imageUri = Uri.fromFile(outputImage);
-                }
-                //启动相机
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, 1);
+                // TODO: 2017/5/12 添加运行时权限
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .create();
+                dialog.setTitle("请选择模式");
+                dialog.setButton(AlertDialog.BUTTON_POSITIVE, "相机", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        File outputImage = new File(getContext().getExternalCacheDir()
+                                , System.currentTimeMillis() + ".jpg");
+                        try {
+                            outputImage.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            imageUri = FileProvider.getUriForFile(getContext()
+                                    , "com.example.jiji.coursedesign.fileprovider", outputImage);
+                        } else {
+                            imageUri = Uri.fromFile(outputImage);
+                        }
+                        //启动相机
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                        startActivityForResult(intent, 1);
+                    }
+                });
+                dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "相册", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO: 2017/5/12 相册选取图像
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission
+                                .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity()
+                                    , new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        } else {
+                            openAlbum();
+                        }
+                    }
+                });
+                dialog.show();
+
+
             }
         });
         super.onActivityCreated(savedInstanceState);
     }
+
 
     //初始化图片列表
     private void initPhoto() {
@@ -136,9 +171,18 @@ public class PhotoFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        initPhoto();
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
+
+    //活动返回结果
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case 1:
+            case 1://调用相机
                 if (resultCode == RESULT_OK) {
                     Intent i = new Intent(getActivity(), PhotoEditActivity.class);
                     i.putExtra("imageUri", imageUri.toString());
@@ -149,13 +193,23 @@ public class PhotoFragment extends Fragment {
                 if (resultCode == 20) {
                     //通知列表更新
                     initPhoto();
-
                     adapter.notifyDataSetChanged();
                 }
+                break;
+            case 3://调用相册
+                if (resultCode == RESULT_OK) {
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        handleImageOnKitKat(data);
+                    } else {
+                        handleImageBeforeKitKat(data);
+                    }
+                }
+                break;
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
+    //初始化菜单
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         title.setVisibility(View.INVISIBLE);
@@ -163,6 +217,7 @@ public class PhotoFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    //重写菜单控件点击事件
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -189,17 +244,17 @@ public class PhotoFragment extends Fragment {
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    int i = 0;
+                                    int j = 0;
                                     for (Integer position : delList) {
                                         DataSupport.deleteAll(Photo.class, "imageUrl=?"
                                                 , photoList.get(position).getImageUrl());
-                                        i++;
+                                        j++;
                                     }
                                     initPhoto();
                                     adapter.initIsCheckMap();
                                     adapter.setShowBox();
                                     adapter.notifyDataSetChanged();
-                                    Snackbar.make(fab, "成功删除" + i + "个所选项", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(fab, "成功删除" + j + "个所选项", Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                     isDelete.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
@@ -210,10 +265,86 @@ public class PhotoFragment extends Fragment {
                     });
                     isDelete.show();
                 } else {
-                    Toast.makeText(main, "请长按选择删除项", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(main, "长按选择删除项", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
         return true;
     }
+
+    //Android6.0以上添加动态申请权限
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1://打开相册申请sd卡读写权限
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //打开相册
+                    openAlbum();
+                } else {
+                    Toast.makeText(main, "You denied the permission", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
+
+    //打开相册
+    private void openAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK
+                , MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, 3);
+    }
+
+    //获取图片sdk>=4.4
+    // TODO: 2017/5/12  
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void handleImageOnKitKat(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+        if (DocumentsContract.isDocumentUri(getContext(), uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content:" +
+                        "//downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = uri.getPath();
+        }
+        //获取图片路径后打开activity
+        Intent i = new Intent(getActivity(), PhotoEditActivity.class);
+        i.putExtra("imageUri", imagePath);
+        startActivityForResult(i, 2);
+    }
+
+    //获取图片sdk<4.4
+    private void handleImageBeforeKitKat(Intent data) {
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri, null);
+        Intent i = new Intent(getActivity(), PhotoEditActivity.class);
+        i.putExtra("imageUri", imagePath.toString());
+        startActivityForResult(i, 2);
+    }
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = getContext().getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore
+                        .Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+
 }

@@ -86,6 +86,7 @@
         android:focusable="false"
         android:gravity="start"
         android:textColor="#000"
+        android:textCursorDrawable="@drawable/cursor"
         android:textSize="20sp" />
 
 </RelativeLayout>

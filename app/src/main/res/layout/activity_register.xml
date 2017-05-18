@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bglogin3"
     android:orientation="vertical">
 
 
@@ -77,136 +78,144 @@
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/recycler_tv_username"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:layout_weight="2"
                         android:text="用户名:"
-                        android:textColor="#000"
+                        android:textColor="#9000"
                         android:textSize="20sp" />
 
                     <EditText
                         android:id="@+id/register_username"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:hint="请输入用户名" />
-                </LinearLayout>
+                        android:layout_below="@id/recycler_tv_username"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
+                        android:hint="请输入用户名"
+                        android:textCursorDrawable="@drawable/cursor" />
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/recycler_tv_pwd"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:layout_weight="2"
                         android:text="密    码:"
-                        android:textColor="#000"
+                        android:textColor="#9000"
                         android:textSize="20sp" />
 
                     <EditText
                         android:id="@+id/register_password"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_below="@id/recycler_tv_pwd"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
                         android:hint="请输入密码"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:textCursorDrawable="@drawable/cursor" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/recycler_tv_confirmpwd"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:layout_weight="2"
                         android:text="确认密码:"
-                        android:textColor="#000"
+                        android:textColor="#9000"
                         android:textSize="20sp" />
 
                     <EditText
                         android:id="@+id/register_confirmpwd"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_below="@id/recycler_tv_confirmpwd"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
                         android:hint="请再次输入密码"
-                        android:inputType="textPassword" />
-                </LinearLayout>
+                        android:inputType="textPassword"
+                        android:textCursorDrawable="@drawable/cursor" />
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/recycler_tv_name"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:layout_weight="2"
                         android:text="昵    称:"
-                        android:textColor="#000"
+                        android:textColor="#9000"
                         android:textSize="20sp" />
 
                     <EditText
                         android:id="@+id/register_name"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:hint="请再次输入昵称" />
-                </LinearLayout>
+                        android:layout_below="@id/recycler_tv_name"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
+                        android:hint="请再次输入昵称"
+                        android:textCursorDrawable="@drawable/cursor" />
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/register_tv_signature"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:layout_weight="2"
                         android:text="个性签名:"
-                        android:textColor="#000"
+                        android:textColor="#9000"
                         android:textSize="20sp" />
 
                     <EditText
                         android:id="@+id/register_signature"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:hint="请留下你的个性签名" />
-                </LinearLayout>
+                        android:layout_below="@id/register_tv_signature"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
+                        android:hint="请留下你的个性签名"
+                        android:textCursorDrawable="@drawable/cursor" />
+                </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-
-
     </ScrollView>
-
 </RelativeLayout>

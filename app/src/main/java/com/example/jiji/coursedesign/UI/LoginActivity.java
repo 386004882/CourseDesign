@@ -19,7 +19,7 @@ import org.litepal.crud.DataSupport;
 /**
  * Created by jiji on 2017/5/7.
  */
-// TODO: 2017/5/7 为登录注册模块添加联网操作及相关判断,加入个人信息
+// TODO: 2017/5/7 为登录注册模块添加联网操作及相关判断
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameTv;
     private EditText pwdTv;

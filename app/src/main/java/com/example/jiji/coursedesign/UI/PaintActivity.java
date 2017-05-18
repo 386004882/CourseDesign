@@ -85,6 +85,8 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
         green = (CircleImageView) findViewById(R.id.paint_color_green);
         blue = (CircleImageView) findViewById(R.id.paint_color_blue);
 
+        setSupportActionBar(toolbar);
+
         color.setOnClickListener(this);
         thick.setOnClickListener(this);
         more.setOnClickListener(this);
@@ -146,7 +148,7 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 4://判断是否在编辑页面返回
-                if (resultCode == 20) {
+                if (resultCode == RESULT_OK) {
                     finish();
                 }
                 break;

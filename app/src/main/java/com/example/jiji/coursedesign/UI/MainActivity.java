@@ -85,13 +85,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_photo:
                         replaceFragment(new PhotoFragment());
                         break;
-                    case R.id.nav_paint:
-
-                        Intent paintIntent = new Intent(getApplicationContext(), PaintActivity.class);
-                        startActivity(paintIntent);
-                        navView.setCheckedItem(R.id.nav_text);
-                        replaceFragment(new PhotoFragment());
-                        break;
                     case R.id.nav_weather:
 
                         SharedPreferences prefs = PreferenceManager
@@ -136,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //更换碎片
-    private void replaceFragment(android.support.v4.app.Fragment fragment) {
+    public void replaceFragment(android.support.v4.app.Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_layout, fragment);
@@ -166,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         isExit.show();
-        // super.onBackPressed();
     }
 
 

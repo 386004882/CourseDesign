@@ -70,7 +70,7 @@ public class PhotoEditActivity extends AppCompatActivity {
                 photo.setImageUrl(imageUrl);
                 photo.setTime(date);
                 photo.save();
-                setResult(20, new Intent());
+                setResult(RESULT_OK, new Intent());
                 finish();
             }
         });

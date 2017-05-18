@@ -99,7 +99,7 @@ public class TextEditActivity extends AppCompatActivity {
                                     String now = formatter.format(curDate);
                                     textRecord.setTime(now);
                                     textRecord.save();
-
+                                    setResult(RESULT_OK, new Intent());
                                     finish();
                                 }
                             });
@@ -122,7 +122,7 @@ public class TextEditActivity extends AppCompatActivity {
                     textRecord.setTime(now);
                     textRecord.setAlertTime(dateTime);
                     textRecord.save();
-                    setResult(1, new Intent());
+                    setResult(RESULT_OK, new Intent());
                     finish();
                 }
 

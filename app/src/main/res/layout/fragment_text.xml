@@ -20,8 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            app:backgroundTint="@color/colorPrimary"
-            android:src="@drawable/ic_action_add" />
+            android:src="@drawable/ic_action_add"
+            app:backgroundTint="#c000"
+            app:elevation="5dp" />
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

@@ -38,6 +38,8 @@ import java.util.Map;
  */
 
 public class TextFragment extends Fragment {
+    private static final int CHOOSE = 1;
+    private static final int TEXT_OK = 10;
     private FloatingActionButton fab;
     private MainActivity main;
     private DrawerLayout drawerLayout;
@@ -54,6 +56,7 @@ public class TextFragment extends Fragment {
         drawerLayout = (DrawerLayout) main.findViewById(R.id.drawer_layout);
         title = (TextView) main.findViewById(R.id.title_text);
         textRecycler = (RecyclerView) view.findViewById(R.id.text_recycler);
+
 
         setHasOptionsMenu(true);
         return view;
@@ -87,8 +90,10 @@ public class TextFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //点击新建便签
-                Intent intent = new Intent(getActivity(), TextEditActivity.class);
-                startActivityForResult(intent, 1);
+//                Intent intent = new Intent(getActivity(), TextEditActivity.class);
+//                startActivityForResult(intent, TEXT);
+                Intent intent = new Intent(getContext(), ChooseFunctionActivity.class);
+                startActivityForResult(intent, CHOOSE);
             }
         });
 
@@ -188,10 +193,12 @@ public class TextFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case 1://新建便签
-                initText();
-                adapter.notifyDataSetChanged();
-                break;
+            case CHOOSE: //选择功能，在此页面返回为了更新文字标签列表,如果是其他功能，则不需处理
+                if (resultCode == TEXT_OK) {
+                    initText();
+                    adapter.notifyDataSetChanged();
+                    break;
+                }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

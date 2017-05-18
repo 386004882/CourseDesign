@@ -7,12 +7,8 @@
             android:title="@string/text" />
         <item
             android:id="@+id/nav_photo"
-            android:icon="@drawable/ic_action_camera_blue"
+            android:icon="@drawable/ic_action_camera"
             android:title="@string/photo" />
-        <item
-            android:id="@+id/nav_paint"
-            android:icon="@drawable/ic_action_brush"
-            android:title="@string/paint" />
         <item
             android:id="@+id/nav_weather"
             android:icon="@drawable/ic_action_cloudy"

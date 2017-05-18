@@ -70,6 +70,7 @@
                     app:cardCornerRadius="4dp">
 
                     <EditText
+                        android:textCursorDrawable="@drawable/cursor"
                         android:id="@+id/photo_describe_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

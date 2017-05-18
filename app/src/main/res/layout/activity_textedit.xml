@@ -72,9 +72,12 @@
         android:id="@+id/text_edit_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/text_edit_textlayout"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_edit_toolbar"
+        android:background="@null"
         android:gravity="start"
+        android:textCursorDrawable="@drawable/cursor"
         android:textSize="24sp" />
 
 </RelativeLayout>

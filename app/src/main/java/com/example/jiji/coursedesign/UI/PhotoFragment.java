@@ -1,25 +1,12 @@
 package com.example.jiji.coursedesign.UI;
 
-import android.Manifest;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,22 +32,15 @@ import com.example.jiji.coursedesign.db.Photo;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
-
 
 /**
  * Created by jiji on 2017/5/3.
  */
-// TODO: 2017/5/7  添加从相册选择图片
-
-
 public class PhotoFragment extends Fragment {
     private MainActivity main;
     private DrawerLayout drawer;
@@ -65,7 +49,8 @@ public class PhotoFragment extends Fragment {
     private PhotoAdapter adapter;
     private RecyclerView photoRecycler;
     protected FloatingActionButton fab;
-    private Uri imageUri;
+    private static final int PHOTO_OK = 20;
+    private static final int CHOOSE = 1;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
@@ -113,46 +98,31 @@ public class PhotoFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2017/5/12 添加运行时权限
-                AlertDialog dialog = new AlertDialog.Builder(getContext())
-                        .create();
-                dialog.setTitle("请选择模式");
-                dialog.setButton(AlertDialog.BUTTON_POSITIVE, "相机", new DialogInterface.OnClickListener() {
+                AnimationSet set = new AnimationSet(true);
+                AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+                ScaleAnimation scale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f);
+                set.addAnimation(scale);
+                set.addAnimation(alpha);
+                set.setFillAfter(true);
+                set.setDuration(200);
+                fab.startAnimation(set);
+                set.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        File outputImage = new File(getContext().getExternalCacheDir()
-                                , System.currentTimeMillis() + ".jpg");
-                        try {
-                            outputImage.createNewFile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            imageUri = FileProvider.getUriForFile(getContext()
-                                    , "com.example.jiji.coursedesign.fileprovider", outputImage);
-                        } else {
-                            imageUri = Uri.fromFile(outputImage);
-                        }
-                        //启动相机
-                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                        startActivityForResult(intent, 1);
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Intent intent = new Intent(getContext(), ChooseFunctionActivity.class);
+                        startActivityForResult(intent, CHOOSE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
                     }
                 });
-                dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "相册", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO: 2017/5/12 相册选取图像
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission
-                                .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getActivity()
-                                    , new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                        } else {
-                            openAlbum();
-                        }
-                    }
-                });
-                dialog.show();
 
 
             }
@@ -182,27 +152,11 @@ public class PhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case 1://调用相机
-                if (resultCode == RESULT_OK) {
-                    Intent i = new Intent(getActivity(), PhotoEditActivity.class);
-                    i.putExtra("imageUri", imageUri.toString());
-                    startActivityForResult(i, 2);
-                }
-                break;
-            case 2:
-                if (resultCode == 20) {
+            case CHOOSE:
+                if (resultCode == PHOTO_OK) {
                     //通知列表更新
                     initPhoto();
                     adapter.notifyDataSetChanged();
-                }
-                break;
-            case 3://调用相册
-                if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        handleImageOnKitKat(data);
-                    } else {
-                        handleImageBeforeKitKat(data);
-                    }
                 }
                 break;
         }
@@ -271,80 +225,4 @@ public class PhotoFragment extends Fragment {
         }
         return true;
     }
-
-    //Android6.0以上添加动态申请权限
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1://打开相册申请sd卡读写权限
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //打开相册
-                    openAlbum();
-                } else {
-                    Toast.makeText(main, "You denied the permission", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-        }
-    }
-
-    //打开相册
-    private void openAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK
-                , MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, 3);
-    }
-
-    //获取图片sdk>=4.4
-    // TODO: 2017/5/12  
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void handleImageOnKitKat(Intent data) {
-        String imagePath = null;
-        Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(getContext(), uri)) {
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                String id = docId.split(":")[1];
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content:" +
-                        "//downloads/public_downloads"), Long.valueOf(docId));
-                imagePath = getImagePath(contentUri, null);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            imagePath = getImagePath(uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            imagePath = uri.getPath();
-        }
-        //获取图片路径后打开activity
-        Intent i = new Intent(getActivity(), PhotoEditActivity.class);
-        i.putExtra("imageUri", imagePath);
-        startActivityForResult(i, 2);
-    }
-
-    //获取图片sdk<4.4
-    private void handleImageBeforeKitKat(Intent data) {
-        Uri uri = data.getData();
-        String imagePath = getImagePath(uri, null);
-        Intent i = new Intent(getActivity(), PhotoEditActivity.class);
-        i.putExtra("imageUri", imagePath.toString());
-        startActivityForResult(i, 2);
-    }
-
-    private String getImagePath(Uri uri, String selection) {
-        String path = null;
-        Cursor cursor = getContext().getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore
-                        .Images.Media.DATA));
-            }
-            cursor.close();
-        }
-        return path;
-    }
-
-
 }

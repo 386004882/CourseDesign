@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">没用的百宝箱</string>
     <string name="text">文字备忘</string>
-    <string name="photo">图片标签</string>
+    <string name="photo">图片便签</string>
     <string name="paint">随手涂鸦</string>
     <string name="weather">天气概况</string>
     <string name="tools">更多工具</string>

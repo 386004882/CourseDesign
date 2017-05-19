@@ -6,13 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jiji.coursedesign.R;
-import com.example.jiji.coursedesign.UI.TextDetailActivity;
+import com.example.jiji.coursedesign.UI.TextEditActivity;
 import com.example.jiji.coursedesign.db.TextRecord;
 
 import java.util.HashMap;
@@ -81,6 +85,8 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
     static class ViewHolder extends RecyclerView.ViewHolder {
         View textView;
         TextView content;
+        TextView title;
+        TextView time;
         TextView alertTime;
         CheckBox checkBox;
         ImageView icon;
@@ -91,7 +97,9 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
             content = (TextView) view.findViewById(R.id.text_content);
             alertTime = (TextView) view.findViewById(R.id.text_alerttime);
             checkBox = (CheckBox) view.findViewById(R.id.text_isdelete);
+            title = (TextView) view.findViewById(R.id.text_title);
             icon = (ImageView) view.findViewById(R.id.alertIcon);
+            time = (TextView) view.findViewById(R.id.text_time);
         }
     }
 
@@ -119,8 +127,8 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
                         && !holder.checkBox.isChecked()) {
                     //复选框隐藏时打开详情
                     TextRecord record = textRecordList.get(position);
-                    Intent intent = new Intent(view.getContext(), TextDetailActivity.class);
-                    intent.putExtra("textId", record.getId());
+                    Intent intent = new Intent(view.getContext(), TextEditActivity.class);
+                    intent.putExtra("record", record);
                     view.getContext().startActivity(intent);
                 }
             }
@@ -162,6 +170,8 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
     public void onBindViewHolder(TextRecordAdapter.ViewHolder holder, final int position) {
         TextRecord tr = textRecordList.get(position);
         holder.content.setText(tr.getContent());
+        holder.time.setText(tr.getTime());
+        holder.title.setText(tr.getTitle());
         if (tr.getAlertTime() == null || tr.getAlertTime().equals("")) {
             holder.icon.setVisibility(View.INVISIBLE);
         } else {
@@ -171,8 +181,24 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
 
         //长按显示/隐藏
         if (isshowbox) {
+            AnimationSet set = new AnimationSet(true);
+            AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f
+                    , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            set.addAnimation(alphaAnimation);
+            set.addAnimation(scaleAnimation);
+            set.setDuration(200);
+            holder.checkBox.startAnimation(set);
             holder.checkBox.setVisibility(View.VISIBLE);
         } else {
+            AnimationSet set = new AnimationSet(true);
+            AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f
+                    , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            set.addAnimation(alphaAnimation);
+            set.addAnimation(scaleAnimation);
+            set.setDuration(200);
+            holder.checkBox.startAnimation(set);
             holder.checkBox.setVisibility(View.INVISIBLE);
         }
         holder.textView.setTag(position);

@@ -218,7 +218,6 @@ public class ChooseFunctionActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     //创建便签

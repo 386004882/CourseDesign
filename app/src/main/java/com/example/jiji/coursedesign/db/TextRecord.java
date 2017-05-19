@@ -2,13 +2,16 @@ package com.example.jiji.coursedesign.db;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by jiji on 2017/5/6.
  */
 
-public class TextRecord extends DataSupport {
+public class TextRecord extends DataSupport implements Serializable {
     private String content;
     private String time;
+    private String Title;
     private int id;
     private String alertTime;
 
@@ -18,6 +21,14 @@ public class TextRecord extends DataSupport {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return Title;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
     }
 
     public String getContent() {

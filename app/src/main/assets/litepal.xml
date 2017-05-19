@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="cool_weather" />
-    <version value="4" />
+    <version value="5" />
     <list>
         <mapping class="com.example.jiji.coursedesign.db.Province" />
         <mapping class="com.example.jiji.coursedesign.db.City" />
         <mapping class="com.example.jiji.coursedesign.db.County" />
         <mapping class="com.example.jiji.coursedesign.db.Photo" />
-        <mapping class="com.example.jiji.coursedesign.db.User"/>
+        <mapping class="com.example.jiji.coursedesign.db.User" />
         <mapping class="com.example.jiji.coursedesign.db.TextRecord" />
     </list>
 </litepal>

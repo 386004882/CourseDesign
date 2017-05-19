@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.jiji.coursedesign.R;
 import com.example.jiji.coursedesign.Utils.Utility;
+import com.example.jiji.coursedesign.adapter.DividerItemDecoration;
 import com.example.jiji.coursedesign.adapter.TextRecordAdapter;
 import com.example.jiji.coursedesign.db.TextRecord;
 
@@ -61,7 +62,6 @@ public class TextFragment extends Fragment {
         title = (TextView) main.findViewById(R.id.title_text);
         textRecycler = (RecyclerView) view.findViewById(R.id.text_recycler);
 
-
         setHasOptionsMenu(true);
         return view;
     }
@@ -88,6 +88,9 @@ public class TextFragment extends Fragment {
                 return true;
             }
         });
+        //设置分割线
+        textRecycler.addItemDecoration(new DividerItemDecoration(getContext()
+                , DividerItemDecoration.VERTICAL_LIST));
         textRecycler.setAdapter(adapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +139,7 @@ public class TextFragment extends Fragment {
     @Override
     public void onResume() {
         initText();
+        adapter.notifyDataSetChanged();
         AnimationSet set = new AnimationSet(true);
         AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
         ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f

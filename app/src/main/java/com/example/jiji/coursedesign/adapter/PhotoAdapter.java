@@ -7,6 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -168,8 +172,24 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
 
         //长按显示/隐藏
         if (isshowbox) {
+            AnimationSet set = new AnimationSet(true);
+            AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f
+                    , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            set.addAnimation(alphaAnimation);
+            set.addAnimation(scaleAnimation);
+            set.setDuration(200);
+            holder.checkBox.startAnimation(set);
             holder.checkBox.setVisibility(View.VISIBLE);
         } else {
+            AnimationSet set = new AnimationSet(true);
+            AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f
+                    , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            set.addAnimation(alphaAnimation);
+            set.addAnimation(scaleAnimation);
+            set.setDuration(200);
+            holder.checkBox.startAnimation(set);
             holder.checkBox.setVisibility(View.INVISIBLE);
         }
         holder.photoView.setTag(position);

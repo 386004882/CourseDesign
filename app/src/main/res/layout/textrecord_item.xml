@@ -1,51 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="80dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="5dp">
 
-
-    <CheckBox
-        android:id="@+id/text_isdelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/text_right"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:visibility="invisible" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp">
 
-    <TextView
-        android:id="@+id/text_alerttime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@id/text_isdelete"
-        android:textColor="#999"
-        android:textSize="12dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:translationY="-10dp">
 
-    <ImageView
-        android:id="@+id/alertIcon"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/text_alerttime"
-        android:src="@drawable/ic_action_alarm" />
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:textColor="#666"
+                android:textSize="15dp" />
 
-    <TextView
-        android:id="@+id/text_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/alertIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_action_alarm" />
+
+                <TextView
+                    android:id="@+id/text_alerttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/alertIcon"
+                    android:gravity="center_vertical"
+                    android:textColor="#2ca149"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/text_isdelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@id/alertIcon"
-        android:layout_toStartOf="@id/alertIcon"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textColor="#000"
-        android:textSize="24dp" />
+        android:layout_toLeftOf="@id/text_right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/text_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="15dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

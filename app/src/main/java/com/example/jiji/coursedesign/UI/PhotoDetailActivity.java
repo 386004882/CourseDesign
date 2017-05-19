@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -84,6 +86,10 @@ public class PhotoDetailActivity extends AppCompatActivity {
                 photoText.setFocusable(true);
                 photoText.setFocusableInTouchMode(true);
                 photoText.requestFocus();
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext()
+                        , R.anim.anim_function_show);
+                animation.setFillAfter(false);
+                save.startAnimation(animation);
                 save.setVisibility(View.VISIBLE);
 
                 return true;

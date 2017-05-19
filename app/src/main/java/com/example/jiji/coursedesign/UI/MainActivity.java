@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         //默认加载文字备忘碎片
         replaceFragment(new TextFragment());
 
-
         //侧滑菜单
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.nav_view);

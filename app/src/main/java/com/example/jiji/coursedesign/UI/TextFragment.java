@@ -18,6 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,11 +93,32 @@ public class TextFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //点击新建便签
-//                Intent intent = new Intent(getActivity(), TextEditActivity.class);
-//                startActivityForResult(intent, TEXT);
-                Intent intent = new Intent(getContext(), ChooseFunctionActivity.class);
-                startActivityForResult(intent, CHOOSE);
+                AnimationSet set = new AnimationSet(true);
+                AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+                ScaleAnimation scale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f
+                        , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                set.addAnimation(scale);
+                set.addAnimation(alpha);
+                set.setDuration(100);
+                set.setFillAfter(true);
+                fab.startAnimation(set);
+                set.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Intent intent = new Intent(getContext(), ChooseFunctionActivity.class);
+                        startActivityForResult(intent, CHOOSE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
             }
         });
 
@@ -111,14 +136,17 @@ public class TextFragment extends Fragment {
     @Override
     public void onResume() {
         initText();
+        AnimationSet set = new AnimationSet(true);
+        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+        ScaleAnimation scale = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f
+                , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        set.setDuration(400);
+        set.addAnimation(alpha);
+        set.addAnimation(scale);
+        fab.startAnimation(set);
         super.onResume();
     }
 
-    @Override
-    public void onPause() {
-        initText();
-        super.onPause();
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

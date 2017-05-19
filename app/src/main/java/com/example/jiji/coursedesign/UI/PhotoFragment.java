@@ -98,13 +98,15 @@ public class PhotoFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //透明缩小动画
                 AnimationSet set = new AnimationSet(true);
                 AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
-                ScaleAnimation scale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f);
+                ScaleAnimation scale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f
+                        , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 set.addAnimation(scale);
                 set.addAnimation(alpha);
                 set.setFillAfter(true);
-                set.setDuration(200);
+                set.setDuration(100);
                 fab.startAnimation(set);
                 set.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -123,8 +125,6 @@ public class PhotoFragment extends Fragment {
 
                     }
                 });
-
-
             }
         });
         super.onActivityCreated(savedInstanceState);
@@ -144,6 +144,15 @@ public class PhotoFragment extends Fragment {
     public void onResume() {
         initPhoto();
         adapter.notifyDataSetChanged();
+        AnimationSet set = new AnimationSet(true);
+        set.setFillBefore(false);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f
+                , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        set.setDuration(400);
+        set.addAnimation(alphaAnimation);
+        set.addAnimation(scaleAnimation);
+        fab.startAnimation(set);
         super.onResume();
     }
 

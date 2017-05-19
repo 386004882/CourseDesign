@@ -19,6 +19,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -68,6 +71,69 @@ public class ChooseFunctionActivity extends AppCompatActivity {
         fab_photo = (FloatingActionButton) findViewById(R.id.function_fab_photo);
         fab_camera = (FloatingActionButton) findViewById(R.id.function_fab_camera);
         fab_paint = (FloatingActionButton) findViewById(R.id.function_fab_paint);
+
+        //初始不可见
+        text.setVisibility(View.INVISIBLE);
+        camera.setVisibility(View.INVISIBLE);
+        photo.setVisibility(View.INVISIBLE);
+        paint.setVisibility(View.INVISIBLE);
+        //动画
+        Animation set = AnimationUtils.loadAnimation(this, R.anim.anim_function_show);
+        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+        text.startAnimation(set);
+        set.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation set1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_show);
+                camera.startAnimation(set1);
+                set1.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Animation set2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_show);
+                        photo.startAnimation(set2);
+                        set2.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                Animation set3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_show);
+                                paint.startAnimation(set3);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        //事件
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,11 +158,64 @@ public class ChooseFunctionActivity extends AppCompatActivity {
                 openPaint();
             }
         });
-
         content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                //动画
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_disappear);
+                paint.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Animation a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_disappear);
+                        photo.startAnimation(a);
+                        a.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                Animation a1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_disappear);
+                                camera.startAnimation(a1);
+                                a1.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        Animation a2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_disappear);
+                                        text.startAnimation(a2);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
         });
 

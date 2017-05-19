@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorMain">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_height="150dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:background="?attr/colorPrimary"
+                android:background="@color/colorMain"
                 android:padding="10dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView

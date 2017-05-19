@@ -7,7 +7,7 @@
         android:id="@+id/paint_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorMain">
 
         <RelativeLayout
             android:layout_width="match_parent"

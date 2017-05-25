@@ -72,6 +72,8 @@ public class TextFragment extends Fragment {
 
         initText();
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         textRecycler.setLayoutManager(manager);
         adapter = new TextRecordAdapter(textRecordList);
         adapter.setRecyclerViewOnClickListener(new TextRecordAdapter.RecyclerViewOnItemClickListener() {
@@ -130,7 +132,7 @@ public class TextFragment extends Fragment {
     //初始化列表数据
     private void initText() {
         textRecordList.clear();
-        List<TextRecord> recordList = DataSupport.findAll(TextRecord.class);
+        List<TextRecord> recordList = DataSupport.order("time").find(TextRecord.class);
         for (TextRecord record : recordList) {
             textRecordList.add(record);
         }

@@ -17,7 +17,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -36,7 +35,7 @@ import static org.litepal.LitePalApplication.getContext;
  * Created by jiji on 2017/5/18.
  */
 
-public class ChooseFunctionActivity extends AppCompatActivity {
+public class ChooseFunctionActivity extends BaseActivity {
     private static final int TEXT = 1;
     private static final int PHOTO = 2;
     private static final int CAMERA = 3;

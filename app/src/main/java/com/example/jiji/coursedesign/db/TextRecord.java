@@ -14,6 +14,7 @@ public class TextRecord extends DataSupport implements Serializable {
     private String Title;
     private int id;
     private String alertTime;
+    private long alertTimeLong;
 
     public int getId() {
         return id;
@@ -53,5 +54,13 @@ public class TextRecord extends DataSupport implements Serializable {
 
     public void setAlertTime(String alertTime) {
         this.alertTime = alertTime;
+    }
+
+    public long getAlertTimeLong() {
+        return alertTimeLong;
+    }
+
+    public void setAlertTimeLong(long alertTimeLong) {
+        this.alertTimeLong = alertTimeLong;
     }
 }

@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,7 +26,7 @@ import org.litepal.crud.DataSupport;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 // TODO: 2017/5/7 添加打开抽屉动画
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private CircleImageView icon_image;
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 //侧滑栏点击更换碎片
                 switch (item.getItemId()) {
                     case R.id.nav_text:
-
                         replaceFragment(new TextFragment());
                         break;
                     case R.id.nav_photo:

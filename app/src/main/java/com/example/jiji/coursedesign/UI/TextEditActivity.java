@@ -1,14 +1,17 @@
 package com.example.jiji.coursedesign.UI;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,6 +23,8 @@ import com.example.jiji.coursedesign.R;
 import com.example.jiji.coursedesign.Service.AlarmService;
 import com.example.jiji.coursedesign.db.TextRecord;
 
+import org.litepal.crud.DataSupport;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,7 +35,7 @@ import java.util.Locale;
  */
 // TODO: 2017/5/7 添加可以往输入位置插入其他元素(复选，单选...)及文字样式
 // TODO: 2017/5/7 加入提醒通知
-public class TextEditActivity extends AppCompatActivity {
+public class TextEditActivity extends BaseActivity {
     private Button back;
     private Button ok;
     private Toolbar toolbar;
@@ -40,6 +45,7 @@ public class TextEditActivity extends AppCompatActivity {
     private EditText et_date;
     SimpleDateFormat formatDate = new SimpleDateFormat("MM-dd");
     SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+    private long timeLong;
     private Calendar calendar = java.util.Calendar.getInstance(Locale.CHINA);
 
     private String oldTitle;
@@ -138,7 +144,6 @@ public class TextEditActivity extends AppCompatActivity {
                 final String title = et_title.getText().toString();
                 if (!content.equals("")) {
                     if (date.equals("") || time.equals("")) {
-
                         AlertDialog dialog = new AlertDialog.Builder(TextEditActivity.this).create();
                         dialog.setTitle("提示");
                         dialog.setMessage("是否不设置提醒时间？");
@@ -212,8 +217,12 @@ public class TextEditActivity extends AppCompatActivity {
                             } else {
                                 textRecord.setTitle(title);
                             }
+                            textRecord.setAlertTimeLong(timeLong);
                             textRecord.save();
-                            sendAlarmBroadcast(textRecord);
+                            TextRecord textRecord1 = DataSupport.where("content=? and alertTimeLong=?"
+                                    , textRecord.getContent(), textRecord.getAlertTimeLong() + "")
+                                    .findFirst(TextRecord.class);
+                            sendAlarmBroadcast(textRecord1);
                             setResult(RESULT_OK, new Intent());
                             finish();
                         } else {//对象存在，更新数据库
@@ -234,7 +243,9 @@ public class TextEditActivity extends AppCompatActivity {
                                     textRecord.setTitle(title);
                                 }
                                 textRecord.updateAll("id=?", oldId + "");
-                                sendAlarmBroadcast(textRecord);
+                                TextRecord textRecord1 = DataSupport.where("id=?", oldId + "")
+                                        .findFirst(TextRecord.class);
+                                sendAlarmBroadcast(textRecord1);
                                 finish();
                             } else {
                                 finish();
@@ -276,11 +287,17 @@ public class TextEditActivity extends AppCompatActivity {
     };
 
     private void updateDate() {
+        Log.d("TextEditActivity", "updateDate: calender.getTime(): " + calendar.getTime());
+        Log.d("TextEditActivity", "updateDate: calender.getTime().getTime():" + calendar.getTime().getTime());
         et_date.setText(formatDate.format(calendar.getTime()));
     }
 
     private void updateTime() {
+        Log.d("TextEditActivity", "updateTime: updateTime:claender.getTime():" + calendar.getTime());
+        Log.d("TextEditActivity", "updateTime:updateTime:claender.getTime().getTime :" + calendar.getTime().getTime());
+        Log.d("TextEditActivity", "updateTime: long:" + calendar.getTimeInMillis());
         et_time.setText(formatTime.format(calendar.getTime()));
+        timeLong = calendar.getTimeInMillis();
     }
 
     //判断是否存在传输的对象
@@ -306,21 +323,21 @@ public class TextEditActivity extends AppCompatActivity {
         return flag;
     }
 
+    //定时任务
     private void sendAlarmBroadcast(TextRecord textRecord) {
         if (textRecord.getAlertTime() != null && !textRecord.getAlertTime().equals("")) {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd HH:mm");
-            long alertTime = -1;
-            try {
-                Date date = formatter.parse(textRecord.getAlertTime());
-                alertTime = date.getTime();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (alertTime != -1) {
-                // TODO: 2017/5/20  将时间戳发送给服务，由服务处理alarm
-                Intent i = new Intent(getApplicationContext(), AlarmService.class);
-                i.putExtra("alertTime", alertTime);
-                startService(i);
+            if (timeLong != 0L && timeLong > System.currentTimeMillis()) {
+                Intent intent1 = new Intent(TextEditActivity.this, AlarmService.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                intent1.putExtra("record", textRecord);
+                PendingIntent pi = PendingIntent.getService(TextEditActivity.this, textRecord.getId(), intent1, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+                Log.d("TextEditActivity", "sendAlarmBroadcast: " + "----tl:" + timeLong + "----ct:" + System.currentTimeMillis());
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timeLong, pi);
+                Toast.makeText(this, "设置提醒成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "设置提醒失败,请检查提醒时间", Toast.LENGTH_SHORT).show();
             }
         }
     }

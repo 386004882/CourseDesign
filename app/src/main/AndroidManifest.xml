@@ -57,18 +57,9 @@
         <service android:name=".Service.AutoUpdateService">
 
         </service>
-
-
         <service android:name=".Service.AlarmService">
 
         </service>
-
-        <receiver android:name=".receiver.AlarmReceiver">
-            <intent-filter>
-                <action android:name="ALARM_TO_NOTIFICATION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

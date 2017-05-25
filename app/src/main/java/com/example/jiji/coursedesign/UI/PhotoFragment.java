@@ -134,7 +134,7 @@ public class PhotoFragment extends Fragment {
     //初始化图片列表
     private void initPhoto() {
         photoList.clear();
-        List<Photo> photoes = DataSupport.findAll(Photo.class);
+        List<Photo> photoes = DataSupport.order("time").find(Photo.class);
         for (Photo p : photoes) {
             photoList.add(p);
         }

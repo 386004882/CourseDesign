@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +39,7 @@ import static org.litepal.LitePalApplication.getContext;
  * Created by jiji on 2017/5/7.
  */
 
-public class PaintActivity extends AppCompatActivity implements View.OnClickListener {
+public class PaintActivity extends BaseActivity implements View.OnClickListener {
     private ImageView paintView;
     private Bitmap srcBitmap;
     private Bitmap copyBitmap;

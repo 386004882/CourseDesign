@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -16,7 +15,7 @@ import com.example.jiji.coursedesign.R;
  * Created by jiji on 2017/5/5.
  */
 
-public class ShowPhotoActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class ShowPhotoActivity extends BaseActivity implements GestureDetector.OnGestureListener {
     private ImageView imageView;
     private GestureDetector detector;
     private Matrix matrix;

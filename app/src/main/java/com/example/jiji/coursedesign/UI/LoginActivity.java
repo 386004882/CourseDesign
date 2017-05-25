@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +19,7 @@ import org.litepal.crud.DataSupport;
  * Created by jiji on 2017/5/7.
  */
 // TODO: 2017/5/7 为登录注册模块添加联网操作及相关判断
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private EditText usernameTv;
     private EditText pwdTv;
 

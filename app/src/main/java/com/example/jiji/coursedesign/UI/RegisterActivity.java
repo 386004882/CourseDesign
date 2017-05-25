@@ -2,7 +2,6 @@ package com.example.jiji.coursedesign.UI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 // TODO: 2017/5/16 添加图片选择
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
     private EditText et_username;
     private EditText et_pwd;
     private EditText et_cpwd;

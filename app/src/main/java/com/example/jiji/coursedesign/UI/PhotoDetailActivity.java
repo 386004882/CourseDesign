@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,7 @@ import org.litepal.crud.DataSupport;
  * Created by jiji on 2017/5/5.
  */
 
-public class PhotoDetailActivity extends AppCompatActivity {
+public class PhotoDetailActivity extends BaseActivity {
     private String photoUrl;
     private String photoDesc;
     private ImageView photoView;

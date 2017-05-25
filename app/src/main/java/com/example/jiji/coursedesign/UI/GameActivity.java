@@ -8,7 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +23,7 @@ import java.io.InputStream;
  */
 // TODO: 2017/5/7 修改图片分辨率
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends BaseActivity {
     private ImageView src;
     private ImageView after;
     private Bitmap alertBitmap;

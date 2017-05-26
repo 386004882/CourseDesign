@@ -1,5 +1,8 @@
 package com.example.jiji.coursedesign.Utils;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Menu;
 
@@ -115,5 +118,40 @@ public class Utility {
                 menu.getItem(i).setVisible(true);
             }
         }
+    }
+
+    /**
+     * 显示确认框
+     */
+    public static void showConfirmation(Context context, DialogInterface.OnClickListener clickListener) {
+        AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.setTitle("提示");
+        dialog.setMessage("确认退出？");
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定"
+                , clickListener);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消"
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        dialog.show();
+    }
+
+    public static void showConfirmation(Context context, String msg, DialogInterface.OnClickListener clickListener) {
+        AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.setTitle("提示");
+        dialog.setMessage(msg);
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定"
+                , clickListener);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消"
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        dialog.show();
     }
 }

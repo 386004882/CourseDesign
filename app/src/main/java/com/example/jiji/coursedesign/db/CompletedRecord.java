@@ -2,28 +2,25 @@ package com.example.jiji.coursedesign.db;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.Serializable;
-
 /**
- * Created by jiji on 2017/5/6.
+ * Created by jiji on 2017/5/26.
  */
 
-public class TextRecord extends DataSupport implements Serializable {
+public class CompletedRecord extends DataSupport {
     private String content;
     private String time;
     private String Title;
     private int id;
     private String alertTime;
-    private long alertTimeLong;
     private int type;
 
     /**
      * type:
-     * 0:默认分类，深灰色 #9000
-     * 1:日常:蓝色  #00f
-     * 2:工作,紫色
-     * 3:支出,绿色
-     * 4:重要,橙色
+     * 0:默认分类，深灰色
+     * 1:日常:蓝色
+     * 2:工作,橙色
+     * 3:经济,绿色
+     * 4:重要,红色
      */
 
     public int getId() {
@@ -64,14 +61,6 @@ public class TextRecord extends DataSupport implements Serializable {
 
     public void setAlertTime(String alertTime) {
         this.alertTime = alertTime;
-    }
-
-    public long getAlertTimeLong() {
-        return alertTimeLong;
-    }
-
-    public void setAlertTimeLong(long alertTimeLong) {
-        this.alertTimeLong = alertTimeLong;
     }
 
     public int getType() {

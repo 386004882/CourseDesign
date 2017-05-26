@@ -18,7 +18,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
@@ -77,8 +76,7 @@ public class ChooseFunctionActivity extends BaseActivity {
         photo.setVisibility(View.INVISIBLE);
         paint.setVisibility(View.INVISIBLE);
         //动画
-        Animation set = AnimationUtils.loadAnimation(this, R.anim.anim_function_show);
-        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+        final Animation set = AnimationUtils.loadAnimation(this, R.anim.anim_function);
         text.startAnimation(set);
         set.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -88,7 +86,7 @@ public class ChooseFunctionActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Animation set1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_show);
+                Animation set1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function);
                 camera.startAnimation(set1);
                 set1.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -98,7 +96,7 @@ public class ChooseFunctionActivity extends BaseActivity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        Animation set2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_show);
+                        Animation set2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function);
                         photo.startAnimation(set2);
                         set2.setAnimationListener(new Animation.AnimationListener() {
                             @Override
@@ -108,7 +106,7 @@ public class ChooseFunctionActivity extends BaseActivity {
 
                             @Override
                             public void onAnimationEnd(Animation animation) {
-                                Animation set3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function_show);
+                                Animation set3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_function);
                                 paint.startAnimation(set3);
                             }
 
@@ -294,7 +292,6 @@ public class ChooseFunctionActivity extends BaseActivity {
                 break;
             case PHOTO_RESULT://图片编辑是否成功
                 if (resultCode == RESULT_OK) {
-                    // TODO: 2017/5/18:先销毁mian，返回时在重新打开（为了更新）
                     setResult(20);//PHOTO_OK
                     finish();
                 }
@@ -329,7 +326,6 @@ public class ChooseFunctionActivity extends BaseActivity {
     }
 
     //获取图片sdk>=4.4
-    // TODO: 2017/5/12
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleImageOnKitKat(Intent data) {
         String imagePath = null;

@@ -1,6 +1,5 @@
 package com.example.jiji.coursedesign.UI;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +27,7 @@ import com.example.jiji.coursedesign.R;
 import com.example.jiji.coursedesign.Utils.Utility;
 import com.example.jiji.coursedesign.adapter.DividerItemDecoration;
 import com.example.jiji.coursedesign.adapter.TextRecordAdapter;
+import com.example.jiji.coursedesign.db.CompletedRecord;
 import com.example.jiji.coursedesign.db.TextRecord;
 
 import org.litepal.crud.DataSupport;
@@ -42,6 +41,7 @@ import java.util.Map;
  * Created by jiji on 2017/5/4.
  */
 
+// TODO: 2017/5/26 加入颜色分辨不同类型
 public class TextFragment extends Fragment {
     private static final int CHOOSE = 1;
     private static final int TEXT_OK = 10;
@@ -180,44 +180,71 @@ public class TextFragment extends Fragment {
                     }
                 }
                 if (i > 0) {
-                    AlertDialog isDelete = new AlertDialog.Builder(getContext()).create();
-                    isDelete.setTitle("提示");
-                    isDelete.setMessage("确认删除？");
-                    isDelete.setButton(DialogInterface.BUTTON_POSITIVE, "确认"
-                            , new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    int j = 0;
-                                    for (Integer position : delList) {
-                                        DataSupport.deleteAll(TextRecord.class, "id=?"
-                                                , textRecordList.get(position).getId() + "");
-                                        j++;
-                                    }
-                                    initText();
-                                    adapter.initIsCheckedMap();
-                                    adapter.setShowBox();
-                                    adapter.notifyDataSetChanged();
-                                    Snackbar.make(fab, "成功删除" + j + "个所选项", Snackbar.LENGTH_SHORT).show();
-                                }
-                            });
-                    isDelete.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                    Utility.showConfirmation(getContext(), "确认删除?", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            int j = 0;
+                            for (Integer position : delList) {
+                                DataSupport.deleteAll(TextRecord.class, "id=?"
+                                        , textRecordList.get(position).getId() + "");
+                                j++;
+                            }
+                            initText();
+                            adapter.initIsCheckedMap();
+                            adapter.setShowBox();
+                            adapter.notifyDataSetChanged();
+                            Snackbar.make(fab, "成功删除" + j + "个所选项", Snackbar.LENGTH_SHORT).show();
                         }
                     });
-                    isDelete.show();
                 } else {
                     Toast.makeText(main, "长按选择删除项", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.item_setting://设置
-                //暂时为退出登录
-                getContext().getSharedPreferences("user", Context.MODE_PRIVATE)
-                        .edit().clear().apply();
-
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
                 break;
-            case R.id.item_backup:
+            case R.id.item_complete:
+                //设置便签事件完成
+                final HashMap<Integer, Boolean> isCheckedMap1 = (HashMap) adapter.getIsCheckedMap();
+                int k = 0;
+                final List<Integer> delList1 = new ArrayList<>();
+                for (Map.Entry<Integer, Boolean> entry : isCheckedMap1.entrySet()) {
+                    if (entry.getValue()) {
+                        //复选框选中
+                        delList1.add(entry.getKey());
+                        k++;
+                    }
+                }
+                if (k > 0) {
+                    Utility.showConfirmation(getContext(), "确认设置为已完成事项?", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int j = 0;
+                            for (Integer position : delList1) {
+                                //添加完成对象
+                                CompletedRecord completedRecord = new CompletedRecord();
+                                completedRecord.setId(textRecordList.get(position).getId());
+                                completedRecord.setTitle(textRecordList.get(position).getTitle());
+                                completedRecord.setContent(textRecordList.get(position).getContent());
+                                completedRecord.setTime(textRecordList.get(position).getTime());
+                                completedRecord.setAlertTime(textRecordList.get(position).getAlertTime());
+                                completedRecord.setType(textRecordList.get(position).getType());
+                                completedRecord.save();
+                                DataSupport.deleteAll(TextRecord.class, "id=?"
+                                        , textRecordList.get(position).getId() + "");
+                                j++;
+                            }
+                            initText();
+                            adapter.initIsCheckedMap();
+                            adapter.setShowBox();
+                            adapter.notifyDataSetChanged();
+                            Snackbar.make(fab, j + "个事件已完成，可在设置和个人页面查看", Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(main, "长按选择完成项", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
         }

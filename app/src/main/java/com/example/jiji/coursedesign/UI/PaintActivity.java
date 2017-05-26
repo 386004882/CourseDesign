@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.jiji.coursedesign.R;
+import com.example.jiji.coursedesign.Utils.Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -157,21 +157,12 @@ public class PaintActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onBackPressed() {
-        AlertDialog isExit = new AlertDialog.Builder(this).create();
-        isExit.setTitle("系统提示");
-        isExit.setMessage("是否不保存涂鸦?");
-        isExit.setButton(DialogInterface.BUTTON_POSITIVE, "确认", new DialogInterface.OnClickListener() {
+        Utility.showConfirmation(getApplicationContext(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
-        isExit.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        isExit.show();
     }
 
     @Override
@@ -199,21 +190,12 @@ public class PaintActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.paint_back://返回
-                AlertDialog isExit = new AlertDialog.Builder(this).create();
-                isExit.setTitle("系统提示");
-                isExit.setMessage("是否不保存涂鸦?");
-                isExit.setButton(DialogInterface.BUTTON_POSITIVE, "确认", new DialogInterface.OnClickListener() {
+                Utility.showConfirmation(getApplicationContext(), "涂鸦未保存，确认退出？", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 });
-                isExit.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                isExit.show();
                 break;
             case R.id.paint_color://选择颜色
                 if (tools.getVisibility() == View.INVISIBLE) {

@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/function_tv_paint"
-                android:src="@drawable/ic_action_brush"
+                android:src="@drawable/ic_color_lens_white_36dp"
                 app:backgroundTint="#e000" />
         </RelativeLayout>
 

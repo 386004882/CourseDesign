@@ -2,6 +2,7 @@ package com.example.jiji.coursedesign.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -84,6 +86,7 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View textView;
+        TextView text_type;
         TextView content;
         TextView title;
         TextView time;
@@ -95,6 +98,7 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
             super(view);
             textView = view;
             content = (TextView) view.findViewById(R.id.text_content);
+            text_type = (TextView) view.findViewById(R.id.text_type);
             alertTime = (TextView) view.findViewById(R.id.text_alerttime);
             checkBox = (CheckBox) view.findViewById(R.id.text_isdelete);
             title = (TextView) view.findViewById(R.id.text_title);
@@ -116,6 +120,9 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.textrecord_item
                 , parent, false);
         final ViewHolder holder = new ViewHolder(view);
+        Animation animation = AnimationUtils.loadAnimation(parent.getContext(), R.anim.anim_function_show);
+        animation.setDuration(500);
+        view.startAnimation(animation);
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
         holder.textView.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +183,23 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Vi
             holder.icon.setVisibility(View.INVISIBLE);
         } else {
             holder.alertTime.setText(tr.getAlertTime());
+        }
+        switch (tr.getType()) {
+            case 0://灰色
+                holder.text_type.setBackgroundColor(Color.argb(255, 136, 136, 136));
+                break;
+            case 1://蓝
+                holder.text_type.setBackgroundColor(Color.argb(255, 11, 86, 162));
+                break;
+            case 2://紫
+                holder.text_type.setBackgroundColor(Color.argb(255, 74, 43, 154));
+                break;
+            case 3://绿
+                holder.text_type.setBackgroundColor(Color.argb(255, 30, 95, 2));
+                break;
+            case 4://橙
+                holder.text_type.setBackgroundColor(Color.argb(255, 214, 119, 29));
+                break;
         }
 
 

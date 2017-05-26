@@ -7,15 +7,22 @@ import android.app.Service;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -34,7 +41,7 @@ import java.util.Locale;
  * Created by jiji on 2017/5/6.
  */
 // TODO: 2017/5/7 添加可以往输入位置插入其他元素(复选，单选...)及文字样式
-// TODO: 2017/5/7 加入提醒通知
+// TODO: 2017/5/26 修复提醒逻辑以及提醒通知打开页面时的数据传输
 public class TextEditActivity extends BaseActivity {
     private Button back;
     private Button ok;
@@ -47,6 +54,7 @@ public class TextEditActivity extends BaseActivity {
     SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
     private long timeLong;
     private Calendar calendar = java.util.Calendar.getInstance(Locale.CHINA);
+    private Spinner spinner_type;
 
     private String oldTitle;
     private String oldContent;
@@ -54,8 +62,8 @@ public class TextEditActivity extends BaseActivity {
     private String oldTime;
     private String oldDate;
     private int oldId;
+    private int oldType;
     private TextRecord record;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,21 +76,24 @@ public class TextEditActivity extends BaseActivity {
         et_content = (EditText) findViewById(R.id.text_edit_content);
         et_time = (EditText) findViewById(R.id.text_edit_timetext);
         et_date = (EditText) findViewById(R.id.text_edit_datetext);
-
+        spinner_type = (Spinner) findViewById(R.id.text_edit_type);
         setSupportActionBar(toolbar);
 
+        initTypeSpinner();
         //获取传输对象
         Intent data = getIntent();
         record = (TextRecord) data.getSerializableExtra("record");
         if (isRecordObjectExist()) {
             oldId = record.getId();
             oldTitle = record.getTitle().toString();
+            oldType = record.getType();
             if (oldTitle.equals("无标题便签")) {
                 et_title.setText("");
             } else {
                 et_title.setText(oldTitle);
             }
             oldContent = record.getContent().toString();
+            spinner_type.setSelection(oldType);
             et_content.setText(oldContent);
             if (record.getAlertTime() != null) {
                 dateTime = record.getAlertTime().toString();
@@ -92,7 +103,6 @@ public class TextEditActivity extends BaseActivity {
                 et_time.setText(oldDate);
             }
         }
-
         //单击选择日期和时间
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +175,7 @@ public class TextEditActivity extends BaseActivity {
                                             } else {
                                                 textRecord.setTitle(title);
                                             }
+                                            textRecord.setType(spinner_type.getSelectedItemPosition());
                                             textRecord.save();
                                             setResult(RESULT_OK, new Intent());
                                             finish();
@@ -183,6 +194,7 @@ public class TextEditActivity extends BaseActivity {
                                                 } else {
                                                     textRecord.setTitle(title);
                                                 }
+                                                textRecord.setType(spinner_type.getSelectedItemPosition());
                                                 textRecord.updateAll("id=?", oldId + "");
                                                 finish();
                                             } else {
@@ -217,6 +229,7 @@ public class TextEditActivity extends BaseActivity {
                             } else {
                                 textRecord.setTitle(title);
                             }
+                            textRecord.setType(spinner_type.getSelectedItemPosition());
                             textRecord.setAlertTimeLong(timeLong);
                             textRecord.save();
                             TextRecord textRecord1 = DataSupport.where("content=? and alertTimeLong=?"
@@ -242,6 +255,7 @@ public class TextEditActivity extends BaseActivity {
                                 } else {
                                     textRecord.setTitle(title);
                                 }
+                                textRecord.setType(spinner_type.getSelectedItemPosition());
                                 textRecord.updateAll("id=?", oldId + "");
                                 TextRecord textRecord1 = DataSupport.where("id=?", oldId + "")
                                         .findFirst(TextRecord.class);
@@ -316,12 +330,52 @@ public class TextEditActivity extends BaseActivity {
             if (oldTitle.equals(et_title.getText().toString())
                     && oldContent.equals(et_content.getText().toString())
                     && oldTime.equals(et_time.getText().toString())
-                    && oldDate.equals(et_date.getText().toString())) {
+                    && oldDate.equals(et_date.getText().toString())
+                    && oldType == spinner_type.getSelectedItemPosition()) {
                 flag = true;
             }
         }
         return flag;
     }
+
+    private void initTypeSpinner() {
+        String arr[] = new String[]{
+                "未分类", "日常", "工作", "支出", "重要"
+        };
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.text_item_type, arr) {
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                String str = getItem(position);
+                if (convertView == null) {
+                    convertView = LayoutInflater.from(getContext())
+                            .inflate(R.layout.text_item_type, parent, false);
+                }
+                TextView tv = (TextView) convertView.findViewById(R.id.text_spinner_type);
+                tv.setText(str);
+                switch (position) {
+                    case 0:
+                        tv.setBackgroundColor(Color.argb(255, 136, 136, 136));
+                        break;
+                    case 1:
+                        tv.setBackgroundColor(Color.argb(255, 11, 86, 162));
+                        break;
+                    case 2:
+                        tv.setBackgroundColor(Color.argb(255, 74, 43, 154));
+                        break;
+                    case 3:
+                        tv.setBackgroundColor(Color.argb(255, 30, 95, 2));
+                        break;
+                    case 4:
+                        tv.setBackgroundColor(Color.argb(255, 214, 119, 29));
+                        break;
+                }
+                return convertView;
+            }
+        };
+        spinner_type.setAdapter(arrayAdapter);
+    }
+
 
     //定时任务
     private void sendAlarmBroadcast(TextRecord textRecord) {

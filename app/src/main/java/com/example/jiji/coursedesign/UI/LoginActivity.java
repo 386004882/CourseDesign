@@ -18,7 +18,7 @@ import org.litepal.crud.DataSupport;
 /**
  * Created by jiji on 2017/5/7.
  */
-// TODO: 2017/5/7 为登录注册模块添加联网操作及相关判断
+// TODO: 2017/5/7 为登录注册模块添加联网操作
 public class LoginActivity extends BaseActivity {
     private EditText usernameTv;
     private EditText pwdTv;
@@ -27,6 +27,13 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //是否清除所有activity
+        Intent destroyIntent = getIntent();
+        boolean isDestroy = destroyIntent.getBooleanExtra("destroyAll", false);
+        if (isDestroy) {
+            ActivityCollector.DestroyExcept(LoginActivity.this);
+        }
 
         SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
         String saveUsername = sp.getString("username", "");

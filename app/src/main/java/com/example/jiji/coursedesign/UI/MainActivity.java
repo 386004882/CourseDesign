@@ -10,15 +10,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jiji.coursedesign.R;
+import com.example.jiji.coursedesign.Utils.Utility;
 import com.example.jiji.coursedesign.db.User;
 
 import org.litepal.crud.DataSupport;
@@ -29,11 +30,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
-    private CircleImageView icon_image;
     private Toolbar toolbar;
+
+    private CircleImageView icon_image;
+    private NavigationView navView;
     private TextView navName;
     private TextView signature;
-    private NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +98,11 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.nav_tools:
                         //更多工具正在开发中
-
+                        Toast.makeText(MainActivity.this, "更多功能正在开发中,敬请期待...", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_setting:
+                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                        startActivity(intent);
                         break;
                 }
                 drawerLayout.closeDrawers();
@@ -119,7 +123,8 @@ public class MainActivity extends BaseActivity {
         icon_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, PersonalActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -141,21 +146,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog isExit = new AlertDialog.Builder(this).create();
-        isExit.setTitle("系统提示");
-        isExit.setMessage("是否退出程序");
-        isExit.setButton(DialogInterface.BUTTON_POSITIVE, "确认", new DialogInterface.OnClickListener() {
+        Utility.showConfirmation(MainActivity.this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
+
             }
         });
-        isExit.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        isExit.show();
     }
 
 

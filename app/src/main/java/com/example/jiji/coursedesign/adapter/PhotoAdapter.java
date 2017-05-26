@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -112,6 +113,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder>
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item
                 , parent, false);
         final ViewHolder holder = new ViewHolder(view);
+        Animation animation = AnimationUtils.loadAnimation(parent.getContext(), R.anim.anim_alpha);
+        animation.setDuration(500);
+        view.startAnimation(animation);
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
         holder.photoView.setOnClickListener(new View.OnClickListener() {

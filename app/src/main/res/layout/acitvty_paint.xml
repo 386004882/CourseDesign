@@ -7,7 +7,7 @@
         android:id="@+id/paint_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorMain">
+        android:background="#000">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -15,19 +15,19 @@
 
             <Button
                 android:id="@+id/paint_back"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_action_arrow_left"
-                android:layout_centerVertical="true" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_action_arrow_left" />
 
             <Button
                 android:id="@+id/paint_save"
-                android:layout_width="30dp"
-                android:background="@drawable/ic_action_tick"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_action_tick" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>

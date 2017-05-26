@@ -21,7 +21,20 @@ public class ActivityCollector {
     }
 
     public static void DestroyAll() {
+        for (Activity activity : activityList) {
+            activity.finish();
+        }
         activityList.clear();
+    }
+
+    public static void DestroyExcept(Activity except) {
+        for (Activity activity : activityList) {
+            if (!activity.equals(except)) {
+                activity.finish();
+            }
+        }
+        activityList.clear();
+        activityList.add(except);
     }
 
 }

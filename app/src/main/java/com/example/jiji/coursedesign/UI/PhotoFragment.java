@@ -9,7 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -177,6 +176,7 @@ public class PhotoFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         title.setVisibility(View.INVISIBLE);
         Utility.showMenu(menu);
+        menu.findItem(R.id.item_complete).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -200,36 +200,31 @@ public class PhotoFragment extends Fragment {
                     }
                 }
                 if (i > 0) {
-                    AlertDialog isDelete = new AlertDialog.Builder(getContext()).create();
-                    isDelete.setTitle("提示");
-                    isDelete.setMessage("确认删除？");
-                    isDelete.setButton(DialogInterface.BUTTON_POSITIVE, "确认"
-                            , new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    int j = 0;
-                                    for (Integer position : delList) {
-                                        DataSupport.deleteAll(Photo.class, "imageUrl=?"
-                                                , photoList.get(position).getImageUrl());
-                                        j++;
-                                    }
-                                    initPhoto();
-                                    adapter.initIsCheckMap();
-                                    adapter.setShowBox();
-                                    adapter.notifyDataSetChanged();
-                                    Snackbar.make(fab, "成功删除" + j + "个所选项", Snackbar.LENGTH_SHORT).show();
-                                }
-                            });
-                    isDelete.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                    Utility.showConfirmation(getContext(), "确认删除?", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            int j = 0;
+                            for (Integer position : delList) {
+                                DataSupport.deleteAll(Photo.class, "imageUrl=?"
+                                        , photoList.get(position).getImageUrl());
+                                j++;
+                            }
+                            initPhoto();
+                            adapter.initIsCheckMap();
+                            adapter.setShowBox();
+                            adapter.notifyDataSetChanged();
+                            Snackbar.make(fab, "成功删除" + j + "个所选项", Snackbar.LENGTH_SHORT).show();
                         }
                     });
-                    isDelete.show();
+
                 } else {
                     Toast.makeText(main, "长按选择删除项", Toast.LENGTH_SHORT).show();
                 }
+                break;
+
+            case R.id.item_setting:
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;

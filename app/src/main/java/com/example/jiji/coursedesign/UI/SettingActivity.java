@@ -129,7 +129,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.setting_accomplished:
                 btn_accomplished.startAnimation(animation);
                 iv_accomplishedArrow.startAnimation(animation);
-                Toast.makeText(SettingActivity.this, "test1", Toast.LENGTH_SHORT).show();
+                Intent i1 = new Intent(SettingActivity.this, AccomplishedRecordActivity.class);
+                startActivity(i1);
                 break;
             case R.id.setting_game:
                 btn_game.startAnimation(animation);

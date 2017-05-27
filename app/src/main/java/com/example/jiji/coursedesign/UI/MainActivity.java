@@ -36,6 +36,7 @@ public class MainActivity extends BaseActivity {
     private NavigationView navView;
     private TextView navName;
     private TextView signature;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +55,8 @@ public class MainActivity extends BaseActivity {
         signature = (TextView) nav.findViewById(R.id.nav_signature);
 
         SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
-        String username = sp.getString("username", "");
-        if (!username.equals("")) {
-            User saveUser = DataSupport.where("username=?", username).findFirst(User.class);
-            if (saveUser != null) {
-                navName.setText(saveUser.getName());
-                signature.setText(saveUser.getSignature());
-            }
-        }
+        username = sp.getString("username", "");
+        initUserData();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -155,5 +150,19 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void initUserData() {
+        if (!username.equals("")) {
+            User saveUser = DataSupport.where("username=?", username).findFirst(User.class);
+            if (saveUser != null) {
+                navName.setText(saveUser.getName());
+                signature.setText(saveUser.getSignature());
+            }
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        initUserData();
+        super.onResume();
+    }
 }

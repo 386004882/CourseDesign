@@ -2,11 +2,13 @@ package com.example.jiji.coursedesign.db;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by jiji on 2017/5/26.
  */
 
-public class CompletedRecord extends DataSupport {
+public class CompletedRecord extends DataSupport implements Serializable {
     private String content;
     private String time;
     private String Title;

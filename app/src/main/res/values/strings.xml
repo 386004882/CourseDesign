@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">没用的百宝箱</string>
+    <string name="app_name">普通的便签</string>
     <string name="text">文字备忘</string>
     <string name="photo">图片便签</string>
     <string name="paint">随手涂鸦</string>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="80dp"
+    android:background="#6000">
 
     <TextView
         android:id="@+id/text_type"
@@ -10,72 +11,72 @@
         android:layout_marginBottom="2dp" />
 
     <RelativeLayout
+        android:id="@+id/text_right"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:translationY="-10dp">
+
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:textColor="#a999"
+                android:textSize="15dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/alertIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_action_alarm" />
+
+                <TextView
+                    android:id="@+id/text_alerttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/alertIcon"
+                    android:gravity="center_vertical"
+                    android:textColor="#2ca149"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/text_isdelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/text_right"
         android:layout_toRightOf="@id/text_type">
-
-        <RelativeLayout
-            android:id="@+id/text_right"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
-                android:translationY="-10dp">
-
-                <TextView
-                    android:id="@+id/text_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center_vertical"
-                    android:textColor="#a000"
-                    android:textSize="15dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/alertIcon"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:src="@drawable/ic_action_alarm" />
-
-                    <TextView
-                        android:id="@+id/text_alerttime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/alertIcon"
-                        android:gravity="center_vertical"
-                        android:textColor="#2ca149"
-                        android:textSize="15dp" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <CheckBox
-                android:id="@+id/text_isdelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@id/text_right"
             android:orientation="vertical">
 
             <TextView
@@ -83,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
-                android:textColor="#000"
+                android:textColor="#ccc"
                 android:textSize="20dp" />
 
             <TextView
@@ -93,9 +94,11 @@
                 android:layout_weight="5"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:textColor="#999"
                 android:textSize="15dp" />
 
         </LinearLayout>
+
 
     </RelativeLayout>
 </RelativeLayout>
